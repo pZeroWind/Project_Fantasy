@@ -1,0 +1,18 @@
+{
+    "EntityId": "1000",
+    "EntityDataType": "Character",
+    "PropertyData": {
+        "Name": "Player",
+        "Atk": 50,
+        "GrowAtk": 10,
+        "Def": 50,
+        "GrowDef": 10,
+        "Critical": 0.15,
+        "CriticalDamage": 1.5,
+        "Hp": 1000,
+        "GrowHp": 100,
+        "Mp": 500,
+        "GrowMp": 50,
+        "Speed": 50
+    }
+}
