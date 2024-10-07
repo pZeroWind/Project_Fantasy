@@ -1,18 +1,18 @@
-{
-    "EntityId": "1001",
-    "EntityDataType": "Character",
-    "PropertyData": {
-        "Name": "Siramu",
-        "Atk": 50,
-        "GrowAtk": 10,
-        "Def": 50,
-        "GrowDef": 10,
-        "Critical": 0.15,
-        "CriticalDamage": 1.5,
-        "Hp": 1000,
-        "GrowHp": 100,
-        "Mp": 500,
-        "GrowMp": 50,
-        "Speed": 50
-    }
+﻿{
+  "EntityId": "1001",
+  "Name": "InferiorSprite",
+  "EntityDataType": "Character",
+  "PropertyData": {
+    "Atk": 50.0,
+    "GrowAtk": 10.0,
+    "Def": 50.0,
+    "GrowDef": 10.0,
+    "Critical": 0.15,
+    "CriticalDamage": 1.5,
+    "Hp": 1000.0,
+    "GrowHp": 100.0,
+    "Mp": 500.0,
+    "GrowMp": 50.0,
+    "Speed": 50.0
+  }
 }

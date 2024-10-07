@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/3
+ * 最后编辑时间：2024/10/7
  * 
  * 文件描述：
  * 管理当前程序中所有的实体
@@ -45,7 +45,7 @@ namespace Framework.Runtime
         Destructible
     }
 
-    public class EntityManager
+    public class EntityManager : IGameManager
     {
         private readonly Dictionary<EntityType, Dictionary<string, List<Entity>>> _entities = 
             new Dictionary<EntityType, Dictionary<string, List<Entity>>>();
@@ -57,6 +57,12 @@ namespace Framework.Runtime
         public void OnInit(GameServiceContainer services)
         {
             _services = services;
+            OnInit();
+        }
+
+        public void OnInit()
+        {
+            if (_services == null) throw new System.NullReferenceException();
             var textArr = Resources.LoadAll<TextAsset>("Data/EntityData");
             foreach (var txt in textArr)
             {

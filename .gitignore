@@ -3,3 +3,10 @@ Temp/
 UserSettings/
 Logs/
 Build/
+.vs/
+obj/
+.vsconfig
+Assembly-CSharp.csproj
+Assembly-CSharp-Editor.csproj
+project_fantasy.sln
+

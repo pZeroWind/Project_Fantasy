@@ -34,7 +34,7 @@ namespace Framework.Runtime
             }
         }
 
-        public void AddBuff(string buffId, BuffType buffType, Entity caster, Entity target)
+        public void AddBuff(string buffId, BuffDataType buffType, Entity caster, Entity target)
         {
             if (!_buffData.TryGetValue(buffId, out var json))
             {

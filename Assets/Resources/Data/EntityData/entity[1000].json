@@ -1,8 +1,8 @@
 {
     "EntityId": "1000",
+    "Name": "Player",
     "EntityDataType": "Character",
     "PropertyData": {
-        "Name": "Player",
         "Atk": 50,
         "GrowAtk": 10,
         "Def": 50,

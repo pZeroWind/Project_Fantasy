@@ -4,7 +4,7 @@
  * 创建时间：2024/10/3
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/3
+ * 最后编辑时间：2024/10/7
  * 
  * 文件描述：
  * 基础Buff数据
@@ -21,8 +21,11 @@ namespace Framework.Runtime
         [JsonField(nameof(BuffId), JsonType.String)]
         public string BuffId;
 
+        [JsonField(nameof(Name), JsonType.String)]
+        public string Name;
+
         [JsonField(nameof(Type), JsonType.Enum)]
-        public BuffType Type;
+        public BuffDataType Type;
     }
 }
 

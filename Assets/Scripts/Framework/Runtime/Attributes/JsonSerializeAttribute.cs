@@ -4,17 +4,17 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/4
+ * 最后编辑时间：2024/10/7
  * 
  * 文件描述：
  * 特性 用于标记可序列化json的类
  */
 
+using Framework.Units;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Unity.VisualScripting;
 
 
 namespace Framework.Runtime
@@ -30,7 +30,7 @@ namespace Framework.Runtime
             {
                 var (cur, curJson) = queue.Dequeue();
                 var type = cur.GetType();
-                var fields = GetFieldInfoArr(type);
+                var fields = JsonHelper.GetFieldInfoArr(type);
                 foreach (var field in fields)
                 {
                     var jField = field.GetCustomAttribute<JsonFieldAttribute>();
@@ -86,7 +86,7 @@ namespace Framework.Runtime
             {
                 var (cur, curJson) = queue.Dequeue();
                 var type = cur.GetType();
-                var fields = GetFieldInfoArr(type);
+                var fields = JsonHelper.GetFieldInfoArr(type);
                 foreach (var field in fields)
                 {
                     var jField = field.GetCustomAttribute<JsonFieldAttribute>();
@@ -132,26 +132,7 @@ namespace Framework.Runtime
             }
         }
 
-        private IEnumerable<FieldInfo> GetFieldInfoArr(Type type)
-        {
-            Stack<Type> stack = new Stack<Type>();
-            stack.Push(type);
-            var parentType = type.BaseType;
-            while (parentType != null)
-            {
-                stack.Push(parentType);
-                parentType = parentType.BaseType;
-            }
-            while(stack.Count > 0)
-            {
-                var cur = stack.Pop();
-                var list = cur.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-                foreach (var field in list)
-                {
-                    yield return field;
-                }
-            }
-        }
+        
     }
 }
 

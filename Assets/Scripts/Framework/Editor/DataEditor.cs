@@ -4,18 +4,20 @@
  * 创建时间：2024/10/1
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/4
+ * 最后编辑时间：2024/10/7
  * 
  * 文件描述：
  * 编辑器工具 用于编辑游戏内各项数据
  */
 
 using Framework.Runtime;
+using Framework.Units;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Reflection;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -32,24 +34,10 @@ namespace Framework.Editor
     {
 
         #region 实体数据
-        private List<EntityData> _entities = new List<EntityData>();
-
-        private List<EntityDataType> _entityTypes = new List<EntityDataType>();
-
-        private EntityDataType _currentEntityType = EntityDataType.Default;
-
-        private string _currentEntityId = string.Empty;
+        private List<JObject> jsonArray = new List<JObject>();
         #endregion
 
-        #region Buff数据
-        private List<BuffData> _buffs = new List<BuffData>();
-
-        private List<BuffType> _buffTypes = new List<BuffType>();
-
-        private BuffType _currentBuffType = BuffType.None;
-
-        private string _currentBuffId = string.Empty;
-        #endregion
+        private int _currentIndex = -1;
 
         private Vector2 _currentPosition = Vector2.zero;
 
@@ -65,18 +53,21 @@ namespace Framework.Editor
             editor.Show();
         }
 
-        [MenuItem("游戏数据/Buff数据")]
+        [MenuItem("游戏数据/BUFF数据")]
         public static void OnLoadBuffDataEditor()
         {
-            DataEditor editor = EditorWindow.GetWindow<DataEditor>("Buff数据编辑器");
+            DataEditor editor = EditorWindow.GetWindow<DataEditor>("BUFF数据编辑器");
             editor.OnInit(DataEditorType.Buff);
             editor.Show();
         }
 
         public void OnInit(DataEditorType type)
         {
+            AssetDatabase.Refresh();
+            _currentIndex = -1;
             _editorType = type;
             position = new Rect(100, 100, 800, 450);
+            jsonArray.Clear();
             switch (_editorType)
             {
                 case DataEditorType.Entity:
@@ -85,24 +76,7 @@ namespace Framework.Editor
                         foreach (var txt in textArr)
                         {
                             var json = JObject.Parse(txt.text);
-                            switch (Enum.Parse<EntityDataType>(json[nameof(EntityDataType)].ToString()))
-                            {
-                                default:
-                                case EntityDataType.Default:
-                                    {
-                                        var e = new EntityData();
-                                        e.Deserialize(json);
-                                        _entities.Add(e);
-                                    }
-                                    break;
-                                case EntityDataType.Character:
-                                    {
-                                        var e = new CharacterEntityData();
-                                        e.Deserialize(json);
-                                        _entities.Add(e);
-                                    }
-                                    break;
-                            }
+                            jsonArray.Add(json);
                         }
                     }
                     break;
@@ -112,28 +86,7 @@ namespace Framework.Editor
                         foreach (var txt in textArr)
                         {
                             var json = JObject.Parse(txt.text);
-                            switch (Enum.Parse<BuffType>(json[nameof(BuffType)].ToString()))
-                            {
-                                default:
-                                case BuffType.None:
-                                    {
-                                        var e = new BuffData();
-                                        e.Deserialize(json);
-                                        _buffs.Add(e);
-                                    }
-                                    break;
-                                case BuffType.NumericBuff:
-                                    {
-                                        var e = new BuffData();
-                                        e.Deserialize(json);
-                                        _buffs.Add(e);
-                                    }
-                                    break;
-                                case BuffType.DotBuff:
-                                    break;
-                                case BuffType.ModifyBuff:
-                                    break;
-                            }
+                            jsonArray.Add(json);
                         }
                     }
                     break;
@@ -149,99 +102,121 @@ namespace Framework.Editor
         void OnGUI()
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.BeginVertical();
-            switch (_editorType)
+            EditorGUILayout.BeginVertical(GUILayout.Width(200));
+            EditorGUILayout.BeginHorizontal(GUILayout.Width(200));
+            if (GUILayout.Button("创建数据"))
             {
-                case DataEditorType.Entity:
-                    foreach (var entity in _entities)
-                    {
-                        if (!_entityTypes.Contains(entity.EntityDataType))
-                        {
-                            _entityTypes.Add(entity.EntityDataType);
-                            GUIStyle typeStyle = new()
-                            {
-                                fontStyle = FontStyle.Bold,
-                                fontSize = 14,
-                                fixedWidth = 200,
-                                alignment = TextAnchor.MiddleLeft,
-                                padding = new RectOffset(4, 2, 2, 2),
-                                normal = new GUIStyleState()
-                                {
-                                    background = Texture2D.grayTexture
-                                },
-                                active = new GUIStyleState()
-                                {
-                                    background = Texture2D.whiteTexture
-                                }
-                            };
-                            if (GUILayout.Button(entity.EntityDataType.ToString(), typeStyle))
-                            {
-                                _currentEntityType = entity.EntityDataType;
-                            }
-                        }
-                        if (_currentEntityType == entity.EntityDataType)
-                        {
-                            GUIStyle childStyle = new()
-                            {
-                                fontStyle = FontStyle.Normal,
-                                fontSize = 12,
-                                fixedWidth = 200,
-                                alignment = TextAnchor.MiddleLeft,
-                                padding = new RectOffset(4, 2, 2, 2),
-                                normal = new GUIStyleState()
-                                {
-                                    background = Texture2D.grayTexture
-                                },
-                                active = new GUIStyleState()
-                                {
-                                    background = Texture2D.whiteTexture
-                                },
-                            };
-                            GUIStyle childStyle_Selected = new()
-                            {
-                                fontStyle = FontStyle.Italic,
-                                fontSize = 12,
-                                fixedWidth = 200,
-                                alignment = TextAnchor.MiddleLeft,
-                                padding = new RectOffset(4, 2, 2, 2),
-                                normal = new GUIStyleState()
-                                {
-                                    background = Texture2D.whiteTexture
-                                },
-                            };
-                            if (GUILayout.Button($"{entity.EntityId}", _currentEntityId != entity.EntityId ? childStyle : childStyle_Selected))
-                            {
-                                _currentEntityId = entity.EntityId;
-                            }
-                        }
-                    }
-                    break;
-                case DataEditorType.Buff:
-                    break;
-                case DataEditorType.Item:
-                    break;
+                JObject obj = new JObject();
+                jsonArray.Add(obj);
             }
-            
+            if (GUILayout.Button("删除数据"))
+            {
+
+            }
+            if (GUILayout.Button("刷新数据"))
+            {
+                OnInit(_editorType);
+            }
+            GUILayout.EndHorizontal();
+            foreach (var jsonObject in jsonArray)
+            {
+                GUIStyle childStyle = new()
+                {
+                    fontStyle = FontStyle.Normal,
+                    fontSize = 12,
+                    fixedWidth = 200,
+                    alignment = TextAnchor.MiddleLeft,
+                    padding = new RectOffset(4, 2, 2, 2),
+                    normal = new GUIStyleState()
+                    {
+                        background = Texture2D.grayTexture
+                    },
+                    active = new GUIStyleState()
+                    {
+                        background = Texture2D.whiteTexture
+                    },
+                };
+                GUIStyle childStyle_Selected = new()
+                {
+                    fontStyle = FontStyle.Bold,
+                    fontSize = 12,
+                    fixedWidth = 200,
+                    alignment = TextAnchor.MiddleLeft,
+                    padding = new RectOffset(4, 2, 2, 2),
+                    normal = new GUIStyleState()
+                    {
+                        background = Texture2D.whiteTexture
+                    },
+                };
+                if (GUILayout.Button($"[{GetId(jsonObject)}]{GetName(jsonObject)}", _currentIndex != jsonArray.IndexOf(jsonObject) ? childStyle : childStyle_Selected))
+                {
+                    _currentIndex = jsonArray.IndexOf(jsonObject);
+                }
+
+            }
+
             EditorGUILayout.EndVertical();
             EditorGUILayout.BeginVertical();
             _currentPosition = EditorGUILayout.BeginScrollView(_currentPosition);
-            var e = _entities.FirstOrDefault(en => en.EntityId == _currentEntityId);
-            if (e != null)
+            if (_currentIndex > -1)
             {
-                ShowData("基本数据", e);
+                var e = jsonArray[_currentIndex];
+                if (e != null)
+                {
+                    ShowData("基本数据", e);
+                }
             }
             EditorGUILayout.EndScrollView();
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
         }
 
-        public void ShowData(string name, object data)
+        public string GetId(JObject json)
         {
-            Queue<(string Name, object Obj)> queue = new Queue<(string, object)> ();
-            queue.Enqueue((name, data));
+            return _editorType switch
+            {
+                DataEditorType.Entity => json["EntityId"] == null ? "" : json["EntityId"].ToString(),
+                DataEditorType.Buff => json["BuffId"] == null ? "" : json["BuffId"].ToString(),
+                DataEditorType.Item => json["ItemId"] == null ? "" : json["ItemId"].ToString(),
+                _ => json["Id"] == null ? "" : json["Id"].ToString()
+            };
+        }
+
+        public string GetName(JObject json)
+        {
+            return _editorType switch
+            {
+                DataEditorType.Entity => json["Name"] == null ? "" : json["Name"].ToString(),
+                DataEditorType.Buff => json["Name"] == null ? "" : json["Name"].ToString(),
+                DataEditorType.Item => json["Name"] == null ? "" : json["Name"].ToString(),
+                _ => json["Name"] == null ? "" : json["Name"].ToString()
+            };
+        }
+
+        public void ShowData(string name, JObject data)
+        {
+            var bindType = _editorType switch
+            {
+                DataEditorType.Entity => typeof(EntityDataType)
+                    .GetField(data[nameof(EntityDataType)] == null ? 
+                            EntityDataType.Default.ToString() :
+                            data[nameof(EntityDataType)].ToString())
+                    .GetCustomAttribute<ETypeBindingAttribute>()
+                    .BindingType,
+                DataEditorType.Buff => typeof(BuffDataType)
+                    .GetField(data[nameof(BuffDataType)] == null ? 
+                            BuffDataType.None.ToString() :
+                            data[nameof(BuffDataType)].ToString())
+                    .GetCustomAttribute<ETypeBindingAttribute>()
+                    .BindingType,
+                DataEditorType.Item => throw new NotImplementedException(),
+                _ => throw new NotImplementedException(),
+            };
+            Queue<(string Name, JObject Obj, Type type)> queue = new Queue<(string, JObject, Type type)> ();
+            queue.Enqueue((name, data, bindType));
             while (queue.Count > 0)
             {
-                var cur = queue.Dequeue();
+                var (curName, curObj, curBindType) = queue.Dequeue();
                 GUIStyle textStyle = new()
                 {
                     fontStyle = FontStyle.Bold,
@@ -249,65 +224,59 @@ namespace Framework.Editor
                     fixedWidth = 200,
                     alignment = TextAnchor.MiddleLeft,
                 };
-                GUILayout.Label(cur.Name, textStyle);
-                Type t = cur.Obj.GetType();
-                var fields = t.GetFields();
+                GUIStyle innerStyle = new()
+                {
+                    fontStyle = FontStyle.Normal,
+                    fontSize = 12,
+                    fixedWidth = 200,
+                    alignment = TextAnchor.MiddleLeft,
+                };
+                GUILayout.Label(curName, textStyle);
+                var fields = JsonHelper.GetFieldInfoArr(curBindType);
                 foreach (var field in fields)
                 {
-                    EditorGUILayout.BeginHorizontal();
-                    var fieldValue = field.GetValue(cur.Obj);
-                    if (fieldValue is IDataProperty)
+                    var jField = field.GetCustomAttribute<JsonFieldAttribute>();
+                    if (jField == null) continue;
+                    var jName = jField.Name ?? field.Name;
+                    var fVal = curObj;
+                    if (jField.DataType != JsonType.Object)
+                        GUILayout.Label(jName, innerStyle);
+                    switch (jField.DataType)
                     {
-                        queue.Enqueue((field.Name, fieldValue));
+                        default:
+                        case JsonType.String:
+                            if (curObj[jName] == null) curObj.Add(jName, string.Empty);
+                            curObj[jName] = EditorGUILayout.TextField(curObj[jName].ToString());
+                            break;
+                        case JsonType.Enum:
+                            if (curObj[jName] == null) curObj.Add(jName, Enum.GetName(field.FieldType, 0));
+                            curObj[jName] = EditorGUILayout.EnumPopup(
+                                (Enum)Enum.Parse(field.FieldType, curObj[jName].ToString()))
+                                .ToString();
+                            break;
+                        case JsonType.Bool:
+                            if (curObj[jName] == null) curObj.Add(jName, false);
+                            curObj[jName] = EditorGUILayout.Toggle(curObj[jName].Value<bool>());
+                            break;
+                        case JsonType.Int:
+                            if (curObj[jName] == null) curObj.Add(jName, 0);
+                            curObj[jName] = EditorGUILayout.IntField(curObj[jName].Value<int>());
+                            break;
+                        case JsonType.Float:
+                            if (curObj[jName] == null) curObj.Add(jName, 0f);
+                            curObj[jName] = EditorGUILayout.FloatField(curObj[jName].Value<float>());
+                            break;
+                        case JsonType.Double:
+                            if (curObj[jName] == null) curObj.Add(jName, 0d);
+                            curObj[jName] = EditorGUILayout.DoubleField(curObj[jName].Value<double>());
+                            break;
+                        case JsonType.Object:
+                            {
+                                if (curObj[jName] == null) curObj.Add(jName, new JObject());
+                                queue.Enqueue((jName, (JObject)curObj[jName], field.FieldType));
+                            }
+                            break;
                     }
-                    else
-                    {
-                        GUILayout.Label(field.Name);
-                        var jsonField = field.GetCustomAttribute<JsonFieldAttribute>();
-                        switch (jsonField.DataType)
-                        {
-                            case JsonType.String:
-                                field.SetValue(
-                                    cur.Obj,
-                                    EditorGUILayout.TextField(fieldValue.ToString(),
-                                    GUILayout.Width(300)));
-                                break;
-                            case JsonType.Enum:
-                                field.SetValue(cur.Obj,
-                                    EditorGUILayout.EnumPopup(
-                                        (Enum)Enum.Parse(field.FieldType, fieldValue.ToString()),
-                                        GUILayout.Width(300)
-                                    )
-                                );
-                                break;
-                            case JsonType.Bool:
-                                field.SetValue(
-                                    cur.Obj,
-                                    EditorGUILayout.Toggle((bool)fieldValue, field.Name));
-                                break;
-                            case JsonType.Int:
-                                field.SetValue(
-                                    cur.Obj,
-                                   EditorGUILayout.IntField((int)fieldValue,
-                                    GUILayout.Width(300)));
-                                break;
-                            case JsonType.Float:
-                                field.SetValue(
-                                    cur.Obj,
-                                    EditorGUILayout.FloatField((float)fieldValue,
-                                    GUILayout.Width(300)));
-                                break;
-                            case JsonType.Double:
-                                field.SetValue(
-                                    cur.Obj,
-                                    EditorGUILayout.DoubleField((double)fieldValue,
-                                    GUILayout.Width(300)));
-                                break;
-                            case JsonType.Object:
-                                break;
-                        }
-                    }
-                    EditorGUILayout.EndHorizontal();
                 }
             }
             if (!_json)
@@ -323,18 +292,97 @@ namespace Framework.Editor
                 {
                     _json = !_json;
                 }
-                var e = _entities.FirstOrDefault(en => en.EntityId == _currentEntityId);
-                if (e != null)
-                {
-                    var json = e.Serialize();
-                    GUILayout.TextArea(json.ToString());
-                }
+                var json = jsonArray[_currentIndex];
+                GUILayout.TextArea(json.ToString());
             }
             if (GUILayout.Button("保存当前数据"))
             {
+                OnSaveData(jsonArray[_currentIndex]);
+            }
+        }
 
+        private void OnSaveData(JObject data)
+        {
+            var json = new JObject();
+            var bindType = _editorType switch
+            {
+                DataEditorType.Entity => typeof(EntityDataType)
+                    .GetField(data[nameof(EntityDataType)] == null ?
+                            EntityDataType.Default.ToString() :
+                            data[nameof(EntityDataType)].ToString())
+                    .GetCustomAttribute<ETypeBindingAttribute>()
+                    .BindingType,
+                DataEditorType.Buff => typeof(BuffDataType)
+                    .GetField(data[nameof(BuffDataType)] == null ?
+                            BuffDataType.None.ToString() :
+                            data[nameof(BuffDataType)].ToString())
+                    .GetCustomAttribute<ETypeBindingAttribute>()
+                    .BindingType,
+                DataEditorType.Item => throw new NotImplementedException(),
+                _ => throw new NotImplementedException(),
+            };
+            Queue<(string Name, JObject SourceObj, JObject TargetObj, Type type)> queue = 
+                new Queue<(string, JObject, JObject, Type type)>();
+            queue.Enqueue((name, data, json, bindType));
+            while (queue.Count > 0)
+            {
+                var (curName, sourObj, tarObj, curBindType) = queue.Dequeue();
+                var fields = JsonHelper.GetFieldInfoArr(curBindType);
+                foreach (var field in fields)
+                {
+                    var jField = field.GetCustomAttribute<JsonFieldAttribute>();
+                    if (jField == null) continue;
+                    var jName = jField.Name ?? field.Name;
+                    var fVal = sourObj;
+                    switch (jField.DataType)
+                    {
+                        default:
+                        case JsonType.String:
+                            if (tarObj[jName] == null) tarObj.Add(jName, string.Empty);
+                            tarObj[jName] = sourObj[jName].ToString();
+                            break;
+                        case JsonType.Enum:
+                            if (tarObj[jName] == null) tarObj.Add(jName, Enum.GetName(field.FieldType, 0));
+                            tarObj[jName] = Enum.Parse(field.FieldType, sourObj[jName].ToString()).ToString();
+                            break;
+                        case JsonType.Bool:
+                            if (tarObj[jName] == null) tarObj.Add(jName, false);
+                            tarObj[jName] = sourObj[jName].Value<bool>();
+                            break;
+                        case JsonType.Int:
+                            if (tarObj[jName] == null) tarObj.Add(jName, 0);
+                            tarObj[jName] = sourObj[jName].Value<int>();
+                            break;
+                        case JsonType.Float:
+                            if (tarObj[jName] == null) tarObj.Add(jName, 0f);
+                            tarObj[jName] = sourObj[jName].Value<float>();
+                            break;
+                        case JsonType.Double:
+                            if (tarObj[jName] == null) tarObj.Add(jName, 0d);
+                            tarObj[jName] = sourObj[jName].Value<double>();
+                            break;
+                        case JsonType.Object:
+                            {
+                                if (tarObj[jName] == null) tarObj.Add(jName, new JObject());
+                                queue.Enqueue((jName, (JObject)sourObj[jName], (JObject)tarObj[jName], field.FieldType));
+                            }
+                            break;
+                    }
+                }
+            }
+            string path = Application.dataPath;
+
+            using (StreamWriter sw = new StreamWriter(_editorType switch
+            {
+                DataEditorType.Entity => $"{path}/Resources/Data/EntityData/entity[{GetId(json)}].json",
+                DataEditorType.Buff => $"{path}/Resources/Data/BuffData/buff[{GetId(json)}].json",
+                DataEditorType.Item => $"{path}/Resources/Data/ItemData/item[{GetId(json)}].json",
+                _ => path,
+            }, false, Encoding.UTF8))
+            {
+                sw.Write(json.ToString());
+                Debug.Log("Data File Save Success");
             }
         }
     }
 }
-

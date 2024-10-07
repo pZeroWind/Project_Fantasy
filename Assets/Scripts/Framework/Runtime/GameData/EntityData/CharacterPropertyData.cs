@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/3
+ * 最后编辑时间：2024/10/7
  * 
  * 文件描述：
  * 存储角色实体数据的类
@@ -18,12 +18,6 @@ namespace Framework.Runtime
     [Serializable]
     public class CharacterPropertyData : IDataProperty
     {
-        /// <summary>
-        /// 名称
-        /// </summary>
-        [JsonField(nameof(Name), JsonType.String)]
-        public string Name;
-
         /// <summary>
         /// 攻击力
         /// </summary>

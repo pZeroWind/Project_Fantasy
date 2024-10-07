@@ -61,9 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Framework\Runtime\GameServiceContainer.cs" />
+    <Compile Include="Assets\Scripts\Framework\Runtime\Managers\EventManager.cs" />
     <Compile Include="Assets\Scripts\Project\TestRoot.cs" />
+    <Compile Include="Assets\Scripts\Framework\Units\JsonHelper.cs" />
     <Compile Include="Assets\Scripts\Framework\Runtime\Buffs\Buff.cs" />
     <Compile Include="Assets\Scripts\Framework\Runtime\Managers\BuffManager.cs" />
+    <Compile Include="Assets\Scripts\Framework\Runtime\Events\GameEvent.cs" />
     <Compile Include="Assets\Scripts\Framework\Runtime\IDataProperty.cs" />
     <Compile Include="Assets\Scripts\Project\States\PlayerIdle.cs" />
     <Compile Include="Assets\Scripts\Project\States\PlayerMove.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="Assets\Scripts\Framework\Runtime\Managers\State.cs" />
     <Compile Include="Assets\Scripts\Project\Entities\PlayerEntity.cs" />
     <Compile Include="Assets\Scripts\Framework\Runtime\Attributes\GameEntityAttribute.cs" />
+    <Compile Include="Assets\Scripts\Framework\Runtime\IGameManager.cs" />
     <Compile Include="Assets\Scripts\Framework\Runtime\GameData\EntityData\CharacterPropertyData.cs" />
     <Compile Include="Assets\Scripts\Framework\Runtime\FrameworkRoot.cs" />
     <Compile Include="Assets\Scripts\Framework\Runtime\Entities\Entity.cs" />
@@ -80,6 +84,7 @@
     <Compile Include="Assets\Scripts\Framework\Runtime\Attributes\JsonSerializeAttribute.cs" />
     <Compile Include="Assets\Scripts\Framework\Runtime\Attributes\InjectObjectAttribute.cs" />
     <Compile Include="Assets\Scripts\Framework\Runtime\GameData\EntityData\CharacterEntityData.cs" />
+    <Compile Include="Assets\Scripts\Framework\Runtime\Attributes\ETypeBindingAttribute.cs" />
     <Compile Include="Assets\Scripts\Framework\Runtime\Managers\StateMachine.cs" />
     <Compile Include="Assets\Scripts\Framework\Runtime\Managers\EntityManager.cs" />
     <Compile Include="Assets\Scripts\Framework\Runtime\Attributes\JsonFieldAttribute.cs" />
