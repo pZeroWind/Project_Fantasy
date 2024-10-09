@@ -4,7 +4,7 @@
  * 创建时间：2024/10/3
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/7
+ * 最后编辑时间：2024/10/10
  * 
  * 文件描述：
  * 基础Buff数据
@@ -14,17 +14,17 @@ using System;
 
 namespace Framework.Runtime
 {
-    [JsonSerialize]
+    [JsonSerializable]
     [Serializable]
-    public class BuffData : IDataProperty
+    public class BuffData
     {
-        [JsonField(nameof(BuffId), JsonType.String)]
+        [JsonField("Buff编号", JsonType.String)]
         public string BuffId;
 
-        [JsonField(nameof(Name), JsonType.String)]
+        [JsonField("Buff名称", JsonType.String)]
         public string Name;
 
-        [JsonField(nameof(Type), JsonType.Enum)]
+        [JsonField("Buff类型", JsonType.Enum)]
         public BuffDataType Type;
     }
 }

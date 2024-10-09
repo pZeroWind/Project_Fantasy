@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/2
+ * 最后编辑时间：2024/10/8
  * 
  * 文件描述：
  * Test项目的启动根节点
@@ -12,23 +12,22 @@
 
 using Framework.Runtime;
 using Project.Entities;
-using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Project
 {
     public class TestRoot : FrameworkRoot
     {
-        public override IEnumerator OnInitialize(GameServiceContainer service)
+        public override void OnInitialize(GameServiceContainer service)
         {
             service.AddSingleton<InputService>();
-            yield return 0;
         }
 
-        public override IEnumerator OnMounted(EntityManager entities)
+        public override void OnMounted(EntityManager entities)
         {
+            SceneManager.LoadScene("Scenes/UIScene", LoadSceneMode.Additive);
             var player = entities.AddEntity<PlayerEntity>(EntityType.Player, "1000", Vector3.zero, Quaternion.identity);
-            yield return new WaitUntil(() => player != null);
         }
     }
 }

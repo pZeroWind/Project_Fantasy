@@ -232,15 +232,15 @@ namespace Framework.Editor
                     alignment = TextAnchor.MiddleLeft,
                 };
                 GUILayout.Label(curName, textStyle);
-                var fields = JsonHelper.GetFieldInfoArr(curBindType);
+                var fields = Units.JsonHelper.GetFieldInfoArr(curBindType);
                 foreach (var field in fields)
                 {
                     var jField = field.GetCustomAttribute<JsonFieldAttribute>();
                     if (jField == null) continue;
-                    var jName = jField.Name ?? field.Name;
+                    var jName = field.Name;
                     var fVal = curObj;
                     if (jField.DataType != JsonType.Object)
-                        GUILayout.Label(jName, innerStyle);
+                        GUILayout.Label(jField.Name, innerStyle);
                     switch (jField.DataType)
                     {
                         default:
@@ -273,7 +273,7 @@ namespace Framework.Editor
                         case JsonType.Object:
                             {
                                 if (curObj[jName] == null) curObj.Add(jName, new JObject());
-                                queue.Enqueue((jName, (JObject)curObj[jName], field.FieldType));
+                                queue.Enqueue((jField.Name, (JObject)curObj[jName], field.FieldType));
                             }
                             break;
                     }
@@ -327,12 +327,12 @@ namespace Framework.Editor
             while (queue.Count > 0)
             {
                 var (curName, sourObj, tarObj, curBindType) = queue.Dequeue();
-                var fields = JsonHelper.GetFieldInfoArr(curBindType);
+                var fields = Units.JsonHelper.GetFieldInfoArr(curBindType);
                 foreach (var field in fields)
                 {
                     var jField = field.GetCustomAttribute<JsonFieldAttribute>();
                     if (jField == null) continue;
-                    var jName = jField.Name ?? field.Name;
+                    var jName = field.Name;
                     var fVal = sourObj;
                     switch (jField.DataType)
                     {

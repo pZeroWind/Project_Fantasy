@@ -31,7 +31,7 @@ namespace Project.States
             if (entity is PlayerEntity player)
             {
                 player.transform.Translate
-                    ((player.EntityData.PropertyData.Speed / 10f) * 
+                    ((player.GetData<CharacterEntityData>().PropertyData.Speed / 10f) * 
                     fTick * 
                     player.InputService.Move);
             }

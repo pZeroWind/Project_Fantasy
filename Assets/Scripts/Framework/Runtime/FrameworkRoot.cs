@@ -28,8 +28,8 @@ namespace Framework.Runtime
             yield return new WaitUntil(() => _serviceContaniner != null && _entityManager != null);
             _entityManager.OnInit(_serviceContaniner);
             BuffManager.OnInit();
-            yield return OnInitialize(_serviceContaniner);
-            yield return OnMounted(_entityManager);
+            OnInitialize(_serviceContaniner);
+            OnMounted(_entityManager);
         }
 
         private void OnDestroy()
@@ -40,13 +40,13 @@ namespace Framework.Runtime
         /// <summary>
         /// 框架内容初始化
         /// </summary>
-        public abstract IEnumerator OnInitialize(GameServiceContainer service);
+        public abstract void OnInitialize(GameServiceContainer service);
 
         /// <summary>
         /// 框架内容初始化完毕
         /// </summary>
         /// <returns></returns>
-        public abstract IEnumerator OnMounted(EntityManager entities);
+        public abstract void OnMounted(EntityManager entities);
     }
 }
 

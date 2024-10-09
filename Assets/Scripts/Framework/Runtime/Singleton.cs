@@ -1,13 +1,13 @@
-/*
- * �ļ�����Singleton.cs
- * ���ߣ�ZeroWind
- * ����ʱ�䣺2024/10/2
+﻿/*
+ * 文件名：Singleton.cs
+ * 作者：ZeroWind
+ * 创建时间：2024/10/2
  * 
- * ���༭�ߣ�ZeroWind
- * ���༭ʱ�䣺2024/10/2
+ * 最后编辑者：ZeroWind
+ * 最后编辑时间：2024/10/2
  * 
- * �ļ�������
- * ������ǰ��Ϊȫ�ֵ���
+ * 文件描述：
+ * 代表当前类为全局单例
  */
 
 namespace Framework.Runtime

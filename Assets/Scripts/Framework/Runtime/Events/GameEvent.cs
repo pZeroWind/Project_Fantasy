@@ -1,13 +1,13 @@
-/*
- * �ļ�����IGameEvent.cs
- * ���ߣ�ZeroWind
- * ����ʱ�䣺2024/10/7
+﻿/*
+ * 文件名：IGameEvent.cs
+ * 作者：ZeroWind
+ * 创建时间：2024/10/7
  * 
- * ���༭�ߣ�ZeroWind
- * ���༭ʱ�䣺2024/10/7
+ * 最后编辑者：ZeroWind
+ * 最后编辑时间：2024/10/7
  * 
- * �ļ�������
- * �¼�����
+ * 文件描述：
+ * 事件基类
  */
 
 using System.Collections;

@@ -19,7 +19,7 @@ using System.Reflection;
 
 namespace Framework.Runtime
 {
-    public class JsonSerializeAttribute : Attribute
+    public class JsonSerializableAttribute : Attribute
     {
         public JObject OnSerialize(object obj)
         {
@@ -30,12 +30,12 @@ namespace Framework.Runtime
             {
                 var (cur, curJson) = queue.Dequeue();
                 var type = cur.GetType();
-                var fields = JsonHelper.GetFieldInfoArr(type);
+                var fields = Units.JsonHelper.GetFieldInfoArr(type);
                 foreach (var field in fields)
                 {
                     var jField = field.GetCustomAttribute<JsonFieldAttribute>();
                     if (jField == null) continue;
-                    var jName = jField.Name ?? field.Name;
+                    var jName = field.Name;
                     var fVal = field.GetValue(cur);
                     switch (jField.DataType)
                     {
@@ -60,15 +60,11 @@ namespace Framework.Runtime
                             break;
                         case JsonType.Object:
                             {
-                                if (fVal.GetType().GetCustomAttribute<JsonSerializeAttribute>() != null)
+                                if (fVal.GetType().GetCustomAttribute<JsonSerializableAttribute>() != null)
                                 {
                                     var jsonObject = new JObject();
                                     curJson.Add(jName, jsonObject);
                                     queue.Enqueue((fVal, jsonObject));
-                                }
-                                else if (fVal is IDataProperty data)
-                                {
-                                    curJson.Add(jName, data.Serialize());
                                 }
                             }
                             break;
@@ -86,12 +82,12 @@ namespace Framework.Runtime
             {
                 var (cur, curJson) = queue.Dequeue();
                 var type = cur.GetType();
-                var fields = JsonHelper.GetFieldInfoArr(type);
+                var fields = Units.JsonHelper.GetFieldInfoArr(type);
                 foreach (var field in fields)
                 {
                     var jField = field.GetCustomAttribute<JsonFieldAttribute>();
                     if (jField == null) continue;
-                    var jName = jField.Name ?? field.Name;
+                    var jName = field.Name;
                     switch (jField.DataType)
                     {
                         default:
@@ -116,14 +112,10 @@ namespace Framework.Runtime
                         case JsonType.Object:
                             {
                                 var fieldObj = Activator.CreateInstance(field.FieldType);
-                                if (fieldObj.GetType().GetCustomAttribute<JsonSerializeAttribute>() != null)
+                                if (fieldObj.GetType().GetCustomAttribute<JsonSerializableAttribute>() != null)
                                 {
                                     field.SetValue(cur, fieldObj);
                                     queue.Enqueue((fieldObj, (JObject)curJson[jName]));
-                                }
-                                else if (fieldObj is IDataProperty data)
-                                {
-                                    data.Deserialize(curJson[jName]);
                                 }
                             }
                             break;

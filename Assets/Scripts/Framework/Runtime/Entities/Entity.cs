@@ -10,6 +10,7 @@
  * 角色实体运行时抽象类
  */
 
+using Framework.Units;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using UnityEngine;
@@ -18,6 +19,8 @@ namespace Framework.Runtime
 {
     public abstract class Entity : MonoBehaviour
     {
+        public EntityData Data;
+
         public BuffManager BuffMgr;
 
         public EntityManager EntityMgr;
@@ -27,12 +30,17 @@ namespace Framework.Runtime
         [Range(0f, 1f)]
         public float TimeScale = 1.0f;
 
+        public Entity()
+        {
+            Data = OnGenerateEntityData();
+        }
+
         IEnumerator Start()
         {
             BuffMgr = new BuffManager();
             StateMachine = new StateMachine(this);
             yield return new WaitUntil(() => BuffMgr != null && EntityMgr != null && StateMachine != null);
-            OnInit();
+            OnStart();
         }
 
         void Update()
@@ -52,7 +60,9 @@ namespace Framework.Runtime
             BuffMgr.OnUpdate(Time.deltaTime * TimeScale);
         }
 
-        public virtual void OnInit() { }
+        public abstract EntityData OnGenerateEntityData();
+
+        public virtual void OnStart() { }
 
         public virtual void OnUpdate(float fTick) { }
 
@@ -60,9 +70,20 @@ namespace Framework.Runtime
 
         public virtual void OnLateUpdate(float fTick) { }
 
-        public abstract JObject Serialize();
+        public virtual JObject Serialize()
+        {
+            return Data.JsonSerialize();
+        }
 
-        public abstract void Deserialize(JObject json);
+        public virtual void Deserialize(JObject json)
+        {
+            Data.JsonDeserialize(json);
+        }
+
+        public T GetData<T>() where T : EntityData
+        {
+            return Data as T;
+        }
     }
 }
 

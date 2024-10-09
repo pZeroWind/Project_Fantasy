@@ -4,22 +4,37 @@
  * 创建时间：2024/10/7
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/7
+ * 最后编辑时间：2024/10/8
  * 
  * 文件描述：
  * 静态JSON工具类
  */
 
+using Framework.Runtime;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEngine;
 
 namespace Framework.Units
 {
     public static class JsonHelper
     {
+        public static JObject JsonSerialize(this object data)
+        {
+            var attr = data.GetType().GetCustomAttribute<JsonSerializableAttribute>();
+            return attr?.OnSerialize(data);
+        }
+
+        public static void JsonDeserialize(this object data, JToken json)
+        {
+            if (json is JObject jsonObject)
+            {
+                var attr = data.GetType().GetCustomAttribute<JsonSerializableAttribute>();
+                attr?.OnDeserialize(jsonObject, data);
+            }
+        }
+
         public static IEnumerable<FieldInfo> GetFieldInfoArr(Type type)
         {
             Stack<Type> stack = new Stack<Type>();

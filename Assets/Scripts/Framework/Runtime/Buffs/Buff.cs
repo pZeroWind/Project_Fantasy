@@ -10,6 +10,7 @@
  * 基础Buff类 无效果
  */
 
+using Framework.Units;
 using Newtonsoft.Json.Linq;
 using System;
 using Unity.VisualScripting;
@@ -79,12 +80,12 @@ namespace Framework.Runtime
 
         public virtual JObject Serialize()
         {
-            return BuffData.Serialize();
+            return BuffData.JsonSerialize();
         }
 
         public virtual void Deserialize(JObject json)
         {
-            BuffData.Deserialize(json);
+            BuffData.JsonDeserialize(json);
         }
     }
 }

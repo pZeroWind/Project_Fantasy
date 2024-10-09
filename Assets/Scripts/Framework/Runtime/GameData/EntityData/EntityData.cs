@@ -4,7 +4,7 @@
  * 创建时间：2024/10/3
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/7
+ * 最后编辑时间：2024/10/10
  * 
  * 文件描述：
  * 存储实体基本数据的类
@@ -23,17 +23,17 @@ namespace Framework.Runtime
         Character
     }
 
-    [JsonSerialize]
+    [JsonSerializable]
     [Serializable]
-    public class EntityData : IDataProperty
+    public class EntityData
     {
-        [JsonField(nameof(EntityId), JsonType.String)]
+        [JsonField("实体编号", JsonType.String)]
         public string EntityId;
 
-        [JsonField(nameof(Name), JsonType.String)]
+        [JsonField("实体名称", JsonType.String)]
         public string Name;
 
-        [JsonField(nameof(EntityDataType), JsonType.Enum)]
+        [JsonField("实体类型", JsonType.Enum)]
         public EntityDataType EntityDataType;
     }
 }
