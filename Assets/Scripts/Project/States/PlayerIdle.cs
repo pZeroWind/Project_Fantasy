@@ -11,6 +11,7 @@
  */
 
 using Framework.Runtime;
+using Framework.Units;
 using Project.Entities;
 using UnityEngine;
 
@@ -23,6 +24,14 @@ namespace Project.States
             if (entity is PlayerEntity player)
             {
                 AddCanToState(StateType.Move, () => player.InputService.Move != Vector3.zero);
+            }
+        }
+
+        public override void OnEnterState(Entity entity)
+        {
+            if (entity is PlayerEntity player)
+            {
+                player.Animator.SetAnimation(StateType.Idle.ToString());
             }
         }
     }

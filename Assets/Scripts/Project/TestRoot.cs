@@ -26,7 +26,7 @@ namespace Project
 
         public override void OnMounted(EntityManager entities)
         {
-            SceneManager.LoadScene("Scenes/UIScene", LoadSceneMode.Additive);
+            SceneManager.LoadScene(1, LoadSceneMode.Additive);
             var player = entities.AddEntity<PlayerEntity>(EntityType.Player, "1000", Vector3.zero, Quaternion.identity);
         }
     }

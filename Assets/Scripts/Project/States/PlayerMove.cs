@@ -11,6 +11,7 @@
  */
 
 using Framework.Runtime;
+using Framework.Units;
 using Project.Entities;
 using UnityEngine;
 
@@ -18,6 +19,8 @@ namespace Project.States
 {
     public class PlayerMove : State
     {
+        private float _rotate = 0;
+
         public override void OnInit(Entity entity)
         {
             if (entity is PlayerEntity player)
@@ -26,14 +29,25 @@ namespace Project.States
             }
         }
 
+        public override void OnEnterState(Entity entity)
+        {
+            if (entity is PlayerEntity player)
+            {
+                player.Animator.SetAnimation(StateType.Move.ToString());
+            }
+        }
+
         public override void OnExecuteState(Entity entity, float fTick)
         {
             if (entity is PlayerEntity player)
             {
-                player.transform.Translate
-                    ((player.GetData<CharacterEntityData>().PropertyData.Speed / 10f) * 
-                    fTick * 
-                    player.InputService.Move);
+                // 计算旋转角度以及移动方向
+                player.CharacterController.Move(fTick 
+                    * (player.GetData<CharacterEntityData>().PropertyData.Speed / 10f) 
+                    * player.InputService.Move);
+                if (player.InputService.Move.x != 0)
+                    _rotate = player.InputService.Move.x > 0 ? 180 : 0;
+                player.transform.rotation = Quaternion.Euler(0, _rotate, 0);
             }
         }
     }

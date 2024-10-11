@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/3
+ * 最后编辑时间：2024/10/11
  * 
  * 文件描述：
  * 角色实体运行时抽象类
@@ -47,6 +47,7 @@ namespace Framework.Runtime
         {
             OnUpdate(Time.deltaTime * TimeScale);
             StateMachine.OnUpdate(this, Time.deltaTime * TimeScale);
+            BuffMgr.OnUpdate(Time.deltaTime * TimeScale);
         }
 
         void FixedUpdate()
@@ -57,7 +58,6 @@ namespace Framework.Runtime
         void LateUpdate()
         {
             OnLateUpdate(Time.deltaTime * TimeScale);
-            BuffMgr.OnUpdate(Time.deltaTime * TimeScale);
         }
 
         public abstract EntityData OnGenerateEntityData();

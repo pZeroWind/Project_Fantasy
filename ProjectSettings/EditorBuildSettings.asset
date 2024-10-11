@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: c87c56e8d03539b40826c56991519e46
+  - enabled: 1
+    path: Assets/Scenes/Maps/GuardianFortress.unity
+    guid: dbd617027b4fbca4c9994cb995c8aa77
   m_configObjects: {}

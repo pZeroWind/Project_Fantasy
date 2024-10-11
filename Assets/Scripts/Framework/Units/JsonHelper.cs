@@ -1,13 +1,13 @@
-/*
- * �ļ�����JsonHelper.cs
- * ���ߣ�ZeroWind
- * ����ʱ�䣺2024/10/7
+﻿/*
+ * 文件名：JsonHelper.cs
+ * 作者：ZeroWind
+ * 创建时间：2024/10/7
  * 
- * ���༭�ߣ�ZeroWind
- * ���༭ʱ�䣺2024/10/8
+ * 最后编辑者：ZeroWind
+ * 最后编辑时间：2024/10/8
  * 
- * �ļ�������
- * ��̬JSON������
+ * 文件描述：
+ * 静态JSON工具类
  */
 
 using Framework.Runtime;

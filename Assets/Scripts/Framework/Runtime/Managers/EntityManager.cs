@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/7
+ * 最后编辑时间：2024/10/11
  * 
  * 文件描述：
  * 管理当前程序中所有的实体
@@ -75,7 +75,7 @@ namespace Framework.Runtime
         /// 添加实体
         /// </summary>
         public T AddEntity<T>(EntityType type, string entityId, Vector3 pos, Quaternion rotate)
-            where T : Entity
+            where T : Entity, new()
         {
             var entityType = typeof(T);
             var attr = entityType.GetCustomAttribute<GameEntityAttribute>();
@@ -89,7 +89,8 @@ namespace Framework.Runtime
                 Debug.LogWarning($"This entity does not have JSON");
                 return null;
             }
-            T entity = GameObject.Instantiate(Resources.Load<T>(attr.ResPath), pos, rotate);
+            GameObject go = GameObject.Instantiate(Resources.Load<GameObject>(attr.ResPath), pos, rotate);
+            T entity = go.AddComponent<T>();
             entity.EntityMgr = this;
             entity.Deserialize(json);
             if (!_entities.TryGetValue(type, out var dict))
