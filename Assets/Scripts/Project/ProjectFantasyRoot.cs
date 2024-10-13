@@ -11,6 +11,7 @@
  */
 
 using Framework.Runtime;
+using Framework.Runtime.Behavior;
 using Project.Entities;
 using System.Collections;
 using UnityEngine;

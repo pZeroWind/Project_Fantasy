@@ -10,6 +10,7 @@
  * 框架运行时最主要的部分，保证游戏正确运行的核心运行组件
  */
 
+using Framework.Runtime.Behavior;
 using System.Collections;
 using UnityEngine;
 
