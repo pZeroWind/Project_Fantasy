@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/11
+ * 最后编辑时间：2024/10/13
  * 
  * 文件描述：
  * 管理当前程序中所有的实体
@@ -89,7 +89,9 @@ namespace Framework.Runtime
                 Debug.LogWarning($"This entity does not have JSON");
                 return null;
             }
-            GameObject go = GameObject.Instantiate(Resources.Load<GameObject>(attr.ResPath), pos, rotate);
+            GameObject prefab = Resources.Load<GameObject>(attr.ResPath);
+            if (prefab == null) return null;
+            GameObject go = GameObject.Instantiate(prefab, pos, rotate == Quaternion.identity ? prefab.transform.rotation : rotate);
             T entity = go.AddComponent<T>();
             entity.EntityMgr = this;
             entity.Deserialize(json);
@@ -104,6 +106,11 @@ namespace Framework.Runtime
                 dict.Add(entityId, list);
             }
             list.Add(entity);
+            var layer = GameObject.Find("EntityLayer");
+            if (layer != null)
+            {
+                go.transform.SetParent(layer.transform);
+            }
             _services.LoadService(entity);
             return entity;
         }

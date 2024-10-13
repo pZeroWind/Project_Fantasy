@@ -16,6 +16,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using UnityEditor;
@@ -195,23 +196,7 @@ namespace Framework.Editor
 
         public void ShowData(string name, JObject data)
         {
-            var bindType = _editorType switch
-            {
-                DataEditorType.Entity => typeof(EntityDataType)
-                    .GetField(data[nameof(EntityDataType)] == null ? 
-                            EntityDataType.Default.ToString() :
-                            data[nameof(EntityDataType)].ToString())
-                    .GetCustomAttribute<ETypeBindingAttribute>()
-                    .BindingType,
-                DataEditorType.Buff => typeof(BuffDataType)
-                    .GetField(data[nameof(BuffDataType)] == null ? 
-                            BuffDataType.None.ToString() :
-                            data[nameof(BuffDataType)].ToString())
-                    .GetCustomAttribute<ETypeBindingAttribute>()
-                    .BindingType,
-                DataEditorType.Item => throw new NotImplementedException(),
-                _ => throw new NotImplementedException(),
-            };
+            var bindType = GetBindType(data);
             Queue<(string Name, JObject Obj, Type type)> queue = new Queue<(string, JObject, Type type)> ();
             queue.Enqueue((name, data, bindType));
             while (queue.Count > 0)
@@ -276,6 +261,12 @@ namespace Framework.Editor
                                 queue.Enqueue((jField.Name, (JObject)curObj[jName], field.FieldType));
                             }
                             break;
+                        //case JsonType.GameObject:
+                        //    {
+                        //        if (curObj[jName] == null) curObj.Add(jName, string.Empty);
+                        //        curObj[jName] = EditorGUILayout.ObjectField("选择预制体", Resources.Load<GameObject>(curObj[jName].ToString()), typeof(GameObject), false).GetInstanceID();
+                        //    }
+                        //    break;
                     }
                 }
             }
@@ -304,23 +295,7 @@ namespace Framework.Editor
         private void OnSaveData(JObject data)
         {
             var json = new JObject();
-            var bindType = _editorType switch
-            {
-                DataEditorType.Entity => typeof(EntityDataType)
-                    .GetField(data[nameof(EntityDataType)] == null ?
-                            EntityDataType.Default.ToString() :
-                            data[nameof(EntityDataType)].ToString())
-                    .GetCustomAttribute<ETypeBindingAttribute>()
-                    .BindingType,
-                DataEditorType.Buff => typeof(BuffDataType)
-                    .GetField(data[nameof(BuffDataType)] == null ?
-                            BuffDataType.None.ToString() :
-                            data[nameof(BuffDataType)].ToString())
-                    .GetCustomAttribute<ETypeBindingAttribute>()
-                    .BindingType,
-                DataEditorType.Item => throw new NotImplementedException(),
-                _ => throw new NotImplementedException(),
-            };
+            var bindType = GetBindType(data);
             Queue<(string Name, JObject SourceObj, JObject TargetObj, Type type)> queue = 
                 new Queue<(string, JObject, JObject, Type type)>();
             queue.Enqueue((name, data, json, bindType));
@@ -383,6 +358,47 @@ namespace Framework.Editor
                 sw.Write(json.ToString());
                 Debug.Log("Data File Save Success");
             }
+        }
+
+        private Type GetBindType(JObject data)
+        {
+            var propType = _editorType switch
+            {
+                DataEditorType.Entity => typeof(EntityData)
+                    .GetFields()
+                    .FirstOrDefault(f => {
+                        var attr = f.GetCustomAttribute<JsonFieldAttribute>();
+                        if (attr == null) return false;
+                        return attr.DataType == JsonType.Enum;
+                    }),
+                DataEditorType.Buff => typeof(BuffData)
+                    .GetFields()
+                    .FirstOrDefault(f => {
+                        var attr = f.GetCustomAttribute<JsonFieldAttribute>();
+                        if (attr == null) return false;
+                        return attr.DataType == JsonType.Enum;
+                    }),
+                DataEditorType.Item => throw new NotImplementedException(),
+                _ => throw new NotImplementedException(),
+            };
+
+            return _editorType switch
+            {
+                DataEditorType.Entity => typeof(EntityDataType)
+                    .GetField(data[propType.Name] == null ?
+                            EntityDataType.Default.ToString() :
+                            data[propType.Name].ToString())
+                    .GetCustomAttribute<ETypeBindingAttribute>()
+                    .BindingType,
+                DataEditorType.Buff => typeof(BuffDataType)
+                    .GetField(data[propType.Name] == null ?
+                            BuffDataType.None.ToString() :
+                            data[propType.Name].ToString())
+                    .GetCustomAttribute<ETypeBindingAttribute>()
+                    .BindingType,
+                DataEditorType.Item => throw new NotImplementedException(),
+                _ => throw new NotImplementedException(),
+            };
         }
     }
 }

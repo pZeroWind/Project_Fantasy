@@ -1,3 +1,15 @@
+/*
+ * 文件名：InputService.cs
+ * 作者：ZeroWind
+ * 创建时间：2024/10/2
+ * 
+ * 最后编辑者：ZeroWind
+ * 最后编辑时间：2024/10/13
+ * 
+ * 文件描述：
+ * 实体状态机类
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,9 +25,9 @@ namespace Framework.Runtime
 
         public void OnUpdate()
         {
-            float x = Input.GetAxisRaw("Horizontal");
-            float y = Input.GetAxisRaw("Vertical");
-            var move = new Vector3(x, y, 0);
+            float h = Input.GetAxisRaw("Horizontal");
+            float v = Input.GetAxisRaw("Vertical");
+            var move = new Vector3(h, v, 0);
             move.Normalize();
             _move = move;
         }

@@ -21,6 +21,10 @@ namespace Project.States
     {
         private float _rotate = 0;
 
+        private float _x;
+
+        private float _z;
+
         public override void OnInit(Entity entity)
         {
             if (entity is PlayerEntity player)
@@ -45,9 +49,14 @@ namespace Project.States
                 player.CharacterController.Move(fTick 
                     * (player.GetData<CharacterEntityData>().PropertyData.Speed / 10f) 
                     * player.InputService.Move);
+                _x = player.transform.rotation.eulerAngles.x;
+                _z = player.transform.rotation.eulerAngles.z;
                 if (player.InputService.Move.x != 0)
+                {
                     _rotate = player.InputService.Move.x > 0 ? 180 : 0;
-                player.transform.rotation = Quaternion.Euler(0, _rotate, 0);
+                    _x = player.InputService.Move.x > 0 ? -_x : _x;
+                }
+                player.transform.rotation = Quaternion.Euler(_x, _rotate, _z);
             }
         }
     }

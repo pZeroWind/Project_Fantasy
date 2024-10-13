@@ -17,7 +17,7 @@ using UnityEngine;
 
 namespace Project.Entities
 {
-    [GameEntity("Prefabs/Player")]
+    [GameEntity("Prefabs/Characters/Player")]
     public class PlayerEntity : Entity
     {
         [InjectObject]

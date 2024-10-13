@@ -1,0 +1,18 @@
+﻿{
+  "BuffId": "1001",
+  "Name": "AttackUp_Lv1",
+  "Type": "NumericBuff",
+  "PropertyData": {
+    "Atk": 25.0,
+    "GrowAtk": 0.0,
+    "Def": 0.0,
+    "GrowDef": 0.0,
+    "Critical": 0.0,
+    "CriticalDamage": 0.0,
+    "Hp": 0.0,
+    "GrowHp": 0.0,
+    "Mp": 0.0,
+    "GrowMp": 0.0,
+    "Speed": 0.0
+  }
+}

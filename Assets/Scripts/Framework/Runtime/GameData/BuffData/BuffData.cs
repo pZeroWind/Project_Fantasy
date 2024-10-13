@@ -14,6 +14,21 @@ using System;
 
 namespace Framework.Runtime
 {
+    public enum BuffDataType
+    {
+        [ETypeBinding(typeof(BuffData))]
+        None,
+
+        [ETypeBinding(typeof(NumericBuffData))]
+        NumericBuff,
+
+        [ETypeBinding(typeof(BuffData))]
+        DotBuff,
+
+        [ETypeBinding(typeof(BuffData))]
+        ModifyBuff
+    }
+
     [JsonSerializable]
     [Serializable]
     public class BuffData

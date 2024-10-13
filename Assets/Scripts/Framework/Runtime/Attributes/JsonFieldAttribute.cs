@@ -22,7 +22,8 @@ namespace Framework.Runtime
         Int,
         Float,
         Double,
-        Object
+        Object,
+        GameObject
     }
 
     public class JsonFieldAttribute : Attribute

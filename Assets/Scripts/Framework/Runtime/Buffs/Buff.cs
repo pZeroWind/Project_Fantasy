@@ -4,7 +4,7 @@
  * 创建时间：2024/10/3
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/7
+ * 最后编辑时间：2024/10/12
  * 
  * 文件描述：
  * 基础Buff类 无效果
@@ -12,27 +12,9 @@
 
 using Framework.Units;
 using Newtonsoft.Json.Linq;
-using System;
-using Unity.VisualScripting;
 
 namespace Framework.Runtime
 {
-    public enum BuffDataType
-    {
-        [ETypeBinding(typeof(BuffData))]
-        None,
-
-        [ETypeBinding(typeof(BuffData))]
-        NumericBuff,
-
-        [ETypeBinding(typeof(BuffData))]
-        DotBuff,
-
-        [ETypeBinding(typeof(BuffData))]
-        ModifyBuff
-    }
-
-
     public class Buff
     {
         public BuffData BuffData;
@@ -53,7 +35,7 @@ namespace Framework.Runtime
                 BuffData = type switch
                 {
                     BuffDataType.None => new BuffData(),
-                    BuffDataType.NumericBuff => new BuffData(),
+                    BuffDataType.NumericBuff => new NumericBuffData(),
                     BuffDataType.DotBuff => new BuffData(),
                     BuffDataType.ModifyBuff => new BuffData(),
                     _ => new BuffData(),
