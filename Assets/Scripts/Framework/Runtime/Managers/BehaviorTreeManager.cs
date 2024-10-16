@@ -1,22 +1,20 @@
 ﻿/*
- * 文件名：BehaviorTree.cs
+ * 文件名：BehaviorTreeManager.cs
  * 作者：ZeroWind
  * 创建时间：2024/10/13
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/13
+ * 最后编辑时间：2024/10/17
  * 
  * 文件描述：
- * 行为树类
+ * 行为树管理器类
  */
 
 using Framework.Units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Xml.Linq;
-using UnityEngine;
 
 namespace Framework.Runtime.Behavior
 {
@@ -43,18 +41,11 @@ namespace Framework.Runtime.Behavior
         /// <summary>
         /// 载入行为树
         /// </summary>
-        public BehaviorTree LoadTree(string treeName, IEnumerable<XElement> xml)
+        public BehaviorTree LoadTree(string treeName, XElement xml)
         {
             BehaviorTree tree = new BehaviorTree();
             var queue = new Queue<(XElement Element, BehaviorNode ParentNode)>();
-            
-            using (var xmlReader = xml.GetEnumerator())
-            {
-                while (xmlReader.MoveNext())
-                {
-                    queue.Enqueue((xmlReader.Current, null));
-                }
-            }
+            queue.Enqueue((xml, null));
             while (queue.Count > 0)
             {
                 (XElement Element, BehaviorNode ParentNode) = queue.Dequeue();
@@ -98,7 +89,13 @@ namespace Framework.Runtime.Behavior
                 return tree;
             }
             // 若缓存中不存在树，尝试载入文件
-            return LoadTree(name, XMLHelper.XmlLoad($"{ResRoot}/{name}.xml"));
+            return LoadTree(name, XMLHelper.XmlLoad($"{ResRoot}/{name}"));
+        }
+
+        public override void Dispose()
+        {
+            _loadedTrees.Clear();
+            _types.Clear();
         }
     }
 }

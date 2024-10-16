@@ -4,14 +4,13 @@
  * 创建时间：2024/10/1
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/7
+ * 最后编辑时间：2024/10/17
  * 
  * 文件描述：
  * 编辑器工具 用于编辑游戏内各项数据
  */
 
 using Framework.Runtime;
-using Framework.Units;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -357,6 +356,7 @@ namespace Framework.Editor
             {
                 sw.Write(json.ToString());
                 Debug.Log("Data File Save Success");
+                AssetDatabase.Refresh();
             }
         }
 

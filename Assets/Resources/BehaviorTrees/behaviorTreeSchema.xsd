@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:tns="http://example.com/behaviorTree" elementFormDefault="qualified" targetNamespace="http://example.com/behaviorTree" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Tree">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CompositeNode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LeafNode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

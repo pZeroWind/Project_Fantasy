@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/2
+ * 最后编辑时间：2024/10/17
  * 
  * 文件描述：
  * 代表当前类为全局单例
@@ -12,7 +12,7 @@
 
 namespace Framework.Runtime
 {
-    public abstract class Singleton<T> where T : Singleton<T>, new()
+    public abstract class Singleton<T> : DisposableObject where T : Singleton<T>, new()
     {
         private static T _value = null;
 

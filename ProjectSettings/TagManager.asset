@@ -8,13 +8,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Floor
   - Water
   - UI
   - Entity
   - Audio
   - Effect
-  - 
+  - Wall
   - 
   - 
   - 
@@ -46,6 +46,9 @@ TagManager:
     locked: 0
   - name: Character
     uniqueID: 746952085
+    locked: 0
+  - name: Effect
+    uniqueID: 1120956581
     locked: 0
   - name: Wall
     uniqueID: 4256244819
