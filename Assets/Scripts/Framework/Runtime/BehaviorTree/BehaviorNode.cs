@@ -4,7 +4,7 @@
  * 创建时间：2024/10/13
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/17
+ * 最后编辑时间：2024/10/18
  * 
  * 文件描述：
  * 行为节点基类
@@ -23,17 +23,6 @@ namespace Framework.Runtime.Behavior
 
     public abstract class BehaviorNode
     {
-        private readonly List<BehaviorNode> _children;
-
-        public void AddChildren(params BehaviorNode[] nodes)
-        {
-            _children.AddRange(nodes);
-        }
-
-        public BehaviorNode()
-        {
-            _children = new List<BehaviorNode>();
-        }
 
         public abstract NodeResult OnExecute(Blackborad blackborad, float fTick);
     }

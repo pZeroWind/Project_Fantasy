@@ -1,10 +1,10 @@
 ﻿/*
- * 文件名：XmlEditor.cs
+ * 文件名：BehaviorEditor.cs
  * 作者：ZeroWind
  * 创建时间：2024/10/17
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/17
+ * 最后编辑时间：2024/10/18
  * 
  * 文件描述：
  * 行为树XML工具 用于生成xml文件与生成xsd文件
@@ -23,7 +23,7 @@ using UnityEngine;
 
 namespace Framework.Editor
 {
-    public class XmlEditor
+    public class BehaviorEditor
     {
         private readonly static string ResRoot = Application.dataPath + "/Resources/BehaviorTrees/";
 
@@ -33,13 +33,13 @@ namespace Framework.Editor
             XNamespace ns = "http://example.com/behaviorTree";
             XNamespace xsi = "http://www.w3.org/2001/XMLSchema-instance";
             List<XElement> list = new List<XElement>
-        {
-            new(ns + "Tree",
-                new XAttribute(XNamespace.Xmlns + "xsi", xsi),
-                new XAttribute(xsi + "schemaLocation", "http://example.com/behaviorTree behaviorTreeSchema.xsd"),
-                string.Empty
-                )
-        };
+            {
+                new(ns + "Tree",
+                    new XAttribute(XNamespace.Xmlns + "xsi", xsi),
+                    new XAttribute(xsi + "schemaLocation", "http://example.com/behaviorTree behaviorTreeSchema.xsd"),
+                    string.Empty
+                    )
+            };
             XMLHelper.XmlSave(list, $"Resources/BehaviorTrees//NewTree[{Guid.NewGuid().ToString("N")}]");
             AssetDatabase.Refresh();
         }
@@ -68,7 +68,7 @@ namespace Framework.Editor
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assembly in assemblies)
             {
-                _types.AddRange(assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(BehaviorNode))));
+                _types.AddRange(assembly.GetTypes().Where(t => !t.IsAbstract && t.IsSubclassOf(typeof(BehaviorNode))));
             }
 
             var tree = new XmlSchemaElement();

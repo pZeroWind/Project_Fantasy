@@ -10,6 +10,7 @@
  * 行为树类
  */
 
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Framework.Runtime.Behavior
@@ -19,6 +20,12 @@ namespace Framework.Runtime.Behavior
         private BehaviorNode _root;
 
         public void SetRoot(BehaviorNode root) => _root = root;
+
+        public void OnUpdate(Blackborad blackborad, float fTick)
+        {
+            if (_root != null)
+                _root.OnExecute(blackborad, fTick);
+        }
     }
 }
 

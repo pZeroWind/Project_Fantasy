@@ -3,7 +3,9 @@
 	xmlns="http://example.com/behaviorTree"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://example.com/behaviorTree behaviorTreeSchema.xsd">
-	<CompositeNode>
-		<LeafNode></LeafNode>
-	</CompositeNode>
+	<SelectorNode>
+		<SequenceNode></SequenceNode>
+		<SequenceNode></SequenceNode>
+		<TestActionNode/>
+	</SelectorNode>
 </Tree>

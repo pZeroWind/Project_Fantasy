@@ -7,14 +7,28 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="CompositeNode">
+  <xs:element name="TestActionNode">
     <xs:complexType>
       <xs:sequence>
         <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="LeafNode">
+  <xs:element name="ParallelNode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SelectorNode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SequenceNode">
     <xs:complexType>
       <xs:sequence>
         <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" />

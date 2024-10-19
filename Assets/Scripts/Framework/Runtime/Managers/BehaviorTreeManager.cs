@@ -59,9 +59,9 @@ namespace Framework.Runtime.Behavior
                         {
                             tree.SetRoot(node);
                         }
-                        else
+                        else if (ParentNode is CompositeNode composite)
                         {
-                            ParentNode.AddChildren(node);
+                            composite.AddChildren(node);
                         }
                         using (var childrenElements = Element.Elements().GetEnumerator())
                         {
