@@ -25,7 +25,7 @@ namespace Framework.Runtime
 
     [JsonSerializable]
     [Serializable]
-    public class EntityData
+    public class EntityData : IConvertible<EntityData>
     {
         [JsonField("实体编号", JsonType.String)]
         public string EntityId;
@@ -35,6 +35,22 @@ namespace Framework.Runtime
 
         [JsonField("实体类型", JsonType.Enum)]
         public EntityDataType EntityDataType;
+
+        public S As<S>() where S : EntityData
+        {
+            return this as S;
+        }
+
+        public bool Is<S>(out S result) where S : EntityData
+        {
+            if (this is S res)
+            {
+                result = res;
+                return true;
+            }
+            result = null;
+            return  false;
+        }
     }
 }
 

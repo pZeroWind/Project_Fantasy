@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/3
+ * 最后编辑时间：2024/10/19
  * 
  * 文件描述：
  * 实体状态抽象类
@@ -17,16 +17,21 @@ namespace Framework.Runtime
 {
     public abstract class State
     {
-        public List<(StateType Type, Func<bool> Condition)> CanToStates {  get; private set; }
+        private readonly List<(StateType Type, Func<bool> Condition)> _canToStates;
 
         public State() 
         {
-            CanToStates = new List<(StateType Type, Func<bool> Condition)>();
+            _canToStates = new List<(StateType Type, Func<bool> Condition)>();
         }
 
         public void AddCanToState(StateType type, Func<bool> condition)
         {
-            CanToStates.Add((type, condition));
+            _canToStates.Add((type, condition));
+        }
+
+        public IEnumerator<(StateType Type, Func<bool> Condition)> GetCanToState()
+        {
+            return _canToStates.GetEnumerator();
         }
 
         /// <summary>
@@ -43,6 +48,11 @@ namespace Framework.Runtime
         /// 执行状态
         /// </summary>
         public virtual void OnExecuteState(Entity entity, float fTick) { }
+
+        /// <summary>
+        /// 执行状态
+        /// </summary>
+        public virtual void OnExecuteFixedState(Entity entity, float fiexdTick) { }
 
         /// <summary>
         /// 退出状态

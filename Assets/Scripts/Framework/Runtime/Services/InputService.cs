@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/13
+ * 最后编辑时间：2024/10/18
  * 
  * 文件描述：
  * 实体状态机类
@@ -19,15 +19,15 @@ namespace Framework.Runtime
     [GameService]
     public class InputService
     {
-        private Vector3 _move = Vector3.zero;
+        private Vector2 _move = Vector2.zero;
 
-        public Vector3 Move => _move;
+        public Vector2 Move => _move;
 
         public void OnUpdate()
         {
             float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
-            var move = new Vector3(h, v, 0);
+            var move = new Vector2(h, v);
             move.Normalize();
             _move = move;
         }

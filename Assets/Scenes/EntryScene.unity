@@ -213,7 +213,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Owner: {fileID: 0}
-  Damping: 0.025
+  Edge: {x: 3.25, y: 4}
+  Damping: 0.1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

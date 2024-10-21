@@ -13,6 +13,8 @@
     "GrowHp": 100.0,
     "Mp": 500.0,
     "GrowMp": 50.0,
-    "Speed": 50.0
+    "Speed": 50.0,
+    "GrowExp": 0.0,
+    "MultiplyExp": 0.0
   }
 }

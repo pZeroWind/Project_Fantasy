@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/11
+ * 最后编辑时间：2024/10/19
  * 
  * 文件描述：
  * 角色实体运行时抽象类
@@ -17,7 +17,7 @@ using UnityEngine;
 
 namespace Framework.Runtime
 {
-    public abstract class Entity : MonoBehaviour
+    public abstract class Entity : MonoBehaviour, IConvertible<Entity>
     {
         public EntityData Data;
 
@@ -53,6 +53,7 @@ namespace Framework.Runtime
         void FixedUpdate()
         {
             OnFixedUpdate(Time.fixedDeltaTime * TimeScale);    
+            StateMachine.OnFixedUpdate(this, Time.fixedDeltaTime * TimeScale);
         }
 
         void LateUpdate()
@@ -80,9 +81,20 @@ namespace Framework.Runtime
             Data.JsonDeserialize(json);
         }
 
-        public T GetData<T>() where T : EntityData
+        public S As<S>() where S : Entity
         {
-            return Data as T;
+            return this as S;
+        }
+
+        public bool Is<S>(out S result) where S : Entity
+        {
+            if (this is S res)
+            {
+                result = res;
+                return true;
+            }
+            result = null;
+            return false;
         }
     }
 }

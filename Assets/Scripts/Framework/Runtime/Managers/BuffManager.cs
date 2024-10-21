@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/3
+ * 最后编辑时间：2024/10/19
  * 
  * 文件描述：
  * 管理当前角色实体的Buff对象
@@ -41,13 +41,14 @@ namespace Framework.Runtime
                 Debug.LogError("This buff dose not exist");
                 return;
             }
+            // 检查当前buff是否存在
             var buff = _buffs.FirstOrDefault(b => b.BuffData.BuffId == buffId &&
                             b.BuffData.Type == buffType &&
                             b.Caster == caster &&
                             b.Target == target);
             if (buff == null)
             {
-                buff = Buff.Create<Buff>(buffType, caster, target);
+                buff = Buff.Create(buffType, caster, target);
                 buff.Deserialize(json);
                 buff.OnApply();
             }

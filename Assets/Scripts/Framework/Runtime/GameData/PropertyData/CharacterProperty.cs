@@ -1,5 +1,5 @@
 ﻿/*
- * 文件名：CharacterPropertyData.cs
+ * 文件名：CharacterProperty.cs
  * 作者：ZeroWind
  * 创建时间：2024/10/2
  * 
@@ -16,7 +16,7 @@ namespace Framework.Runtime
 {
     [JsonSerializable]
     [Serializable]
-    public class CharacterPropertyData
+    public class CharacterProperty
     {
         /// <summary>
         /// 攻击力
@@ -83,6 +83,12 @@ namespace Framework.Runtime
         /// </summary>
         [JsonField("移动速度", JsonType.Float)]
         public float Speed;
+
+        [JsonField("EXP增量", JsonType.Float)]
+        public float GrowExp;
+
+        [JsonField("EXP增长倍率", JsonType.Float)]
+        public float MultiplyExp;
     }
 }
 

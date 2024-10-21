@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/3
+ * 最后编辑时间：2024/10/18
  * 
  * 文件描述：
  * 玩家移动状态
@@ -13,6 +13,7 @@
 using Framework.Runtime;
 using Framework.Units;
 using Project.Entities;
+using System.Linq;
 using UnityEngine;
 
 namespace Project.States
@@ -27,15 +28,15 @@ namespace Project.States
 
         public override void OnInit(Entity entity)
         {
-            if (entity is PlayerEntity player)
+            if (entity.Is<PlayerEntity>(out var player))
             {
-                AddCanToState(StateType.Idle, () => player.InputService.Move == Vector3.zero);
+                AddCanToState(StateType.Idle, () => player.InputService.Move == Vector2.zero);
             }
         }
 
         public override void OnEnterState(Entity entity)
         {
-            if (entity is PlayerEntity player)
+            if (entity.Is<PlayerEntity>(out var player))
             {
                 player.Animator.SetAnimation(StateType.Move.ToString());
             }
@@ -43,12 +44,9 @@ namespace Project.States
 
         public override void OnExecuteState(Entity entity, float fTick)
         {
-            if (entity is PlayerEntity player)
+            if (entity.Is<PlayerEntity>(out var player))
             {
-                // 计算旋转角度以及移动方向
-                player.CharacterController.Move(fTick 
-                    * (player.GetData<CharacterEntityData>().PropertyData.Speed / 10f) 
-                    * player.InputService.Move);
+                // 计算旋转角度
                 _x = player.transform.rotation.eulerAngles.x;
                 _z = player.transform.rotation.eulerAngles.z;
                 if (player.InputService.Move.x != 0)
@@ -57,6 +55,19 @@ namespace Project.States
                     _x = player.InputService.Move.x > 0 ? -_x : _x;
                 }
                 player.transform.rotation = Quaternion.Euler(_x, _rotate, _z);
+            }
+        }
+
+        public override void OnExecuteFixedState(Entity entity, float fiexdTick)
+        {
+            if(entity.Is<PlayerEntity>(out var player))
+            {
+                float speed = player.Data.As<CharacterEntityData>().PropertyData.Speed / 10;
+                Vector2 movePosition = player.InputService.Move;
+                Vector2 currentPosition = player.RigidBody.position;
+                player.RigidBody.MovePosition(
+                    Vector2.MoveTowards(currentPosition, currentPosition + movePosition, speed * fiexdTick)
+                    );
             }
         }
     }

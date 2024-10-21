@@ -19,7 +19,7 @@ namespace Framework.Runtime
     public class NumericBuffData : BuffData
     {
         [JsonField("Buff属性数据", JsonType.Object)]
-        public CharacterPropertyData PropertyData;
+        public CharacterProperty PropertyData;
     }
 }
 

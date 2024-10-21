@@ -35,6 +35,8 @@ namespace Framework.Runtime
 
         private readonly Entity _owner;
 
+        private bool _hasSwitchState;
+
         public StateMachine(Entity owner)
         {
             _owner = owner;
@@ -59,23 +61,32 @@ namespace Framework.Runtime
         /// </summary>
         public void OnUpdate(Entity entity, float fTick)
         {
-            lock (_currentStateLock)
+            _hasSwitchState = false;
+            if (_states.ContainsKey(CurrentState))
             {
-                if (_states.ContainsKey(CurrentState))
+                using var canToStates = _states[CurrentState].GetCanToState();
+                while (canToStates.MoveNext())
                 {
-                    var canToStates = _states[CurrentState].CanToStates;
-                    foreach (var canToState in canToStates)
+                    var canToState = canToStates.Current;
+                    bool condition = canToState.Condition.Invoke();
+                    if (condition)
                     {
-                        bool condition = canToState.Condition.Invoke();
-                        if (condition)
-                        {
-                            _states[CurrentState].OnExitState(entity);
-                            CurrentState = canToState.Type;
-                            _states[CurrentState].OnEnterState(entity);
-                        }
+                        _states[CurrentState].OnExitState(entity);
+                        CurrentState = canToState.Type;
+                        _states[CurrentState].OnEnterState(entity);
+                        _hasSwitchState = true;
+                        return;
                     }
-                    _states[CurrentState].OnExecuteState(entity, fTick);
                 }
+                _states[CurrentState].OnExecuteState(entity, fTick);
+            }
+        }
+
+        public void OnFixedUpdate(Entity entity, float fiexdTick)
+        {
+            if (_states.ContainsKey(CurrentState) && !_hasSwitchState)
+            {
+                _states[CurrentState].OnExecuteFixedState(entity, fiexdTick);
             }
         }
     }

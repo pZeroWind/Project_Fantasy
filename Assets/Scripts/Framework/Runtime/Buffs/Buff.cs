@@ -15,35 +15,56 @@ using Newtonsoft.Json.Linq;
 
 namespace Framework.Runtime
 {
+    public interface IBuff 
+    {
+        
+    }
+
     public class Buff
     {
+        private int _layer = 1;
+
         public BuffData BuffData;
 
         public Entity Caster;
 
         public Entity Target;
 
-        public int Layer = 1;
-
-        public static T Create<T>(BuffDataType type, Entity caster, Entity target)
-            where T : Buff, new()
+        public int Layer
         {
-            var buff = new T
+            get => _layer;
+            set
             {
-                Caster = caster,
-                Target = target,
-                BuffData = type switch
-                {
-                    BuffDataType.None => new BuffData(),
-                    BuffDataType.NumericBuff => new NumericBuffData(),
-                    BuffDataType.DotBuff => new BuffData(),
-                    BuffDataType.ModifyBuff => new BuffData(),
-                    _ => new BuffData(),
-                }
-            };
-            return buff;
+                if (BuffData.IsStackable) 
+                    _layer = value;
+            }
         }
 
+        public Buff(Entity caster, Entity target)
+        {
+            Caster = caster;
+            Target = target;
+        }
+
+        public static Buff Create(BuffDataType type, Entity caster, Entity target)
+        {
+            Buff buff = null;
+            switch (type)
+            {
+                default:
+                case BuffDataType.None:
+                    buff = new Buff(caster, target);
+                    break;
+                case BuffDataType.NumericBuff:
+                    buff = new NumericBuff(caster, caster);
+                    break;
+                case BuffDataType.DotBuff:
+                    break;
+                case BuffDataType.ModifyBuff:
+                    break;
+            }
+            return buff;
+        }
 
         public virtual void OnApply()
         {

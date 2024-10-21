@@ -1,5 +1,5 @@
 ﻿/*
- * 文件名：CharacterEntityData.cs
+ * 文件名：CharacterEntity.cs
  * 作者：ZeroWind
  * 创建时间：2024/10/3
  * 
@@ -19,7 +19,7 @@ namespace Framework.Runtime
     public class CharacterEntityData : EntityData
     {
         [JsonField("角色属性数据", JsonType.Object)]
-        public CharacterPropertyData PropertyData;
+        public CharacterProperty PropertyData;
     }
 }
 

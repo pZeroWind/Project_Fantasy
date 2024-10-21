@@ -31,7 +31,7 @@ namespace Framework.Runtime
 
     [JsonSerializable]
     [Serializable]
-    public class BuffData
+    public class BuffData : IConvertible<BuffData>
     {
         [JsonField("Buff编号", JsonType.String)]
         public string BuffId;
@@ -39,8 +39,27 @@ namespace Framework.Runtime
         [JsonField("Buff名称", JsonType.String)]
         public string Name;
 
+        [JsonField("是否允许叠加")]
+        public bool IsStackable;
+
         [JsonField("Buff类型", JsonType.Enum)]
         public BuffDataType Type;
+
+        public S As<S>() where S : BuffData
+        {
+            return this as S;
+        }
+
+        public bool Is<S>(out S result) where S : BuffData
+        {
+            if (this is S res)
+            {
+                result = res;
+                return true;
+            }
+            result = null;
+            return false;
+        }
     }
 }
 
