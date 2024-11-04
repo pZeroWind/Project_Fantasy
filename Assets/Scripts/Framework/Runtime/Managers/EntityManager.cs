@@ -10,6 +10,7 @@
  * 管理当前程序中所有的实体
  */
 
+using Framework.Units;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Reflection;
@@ -67,15 +68,16 @@ namespace Framework.Runtime
             foreach (var txt in textArr)
             {
                 var json = JObject.Parse(txt.text);
-                _entityJson.Add(json[EntityData.IDFieldName].Value<string>(), json);
+                _entityJson.Add(json["EntityId"].Value<string>(), json);
             }
         }
 
         /// <summary>
         /// 添加实体
         /// </summary>
-        public T AddEntity<T>(EntityType type, string entityId, Vector3 pos, Quaternion rotate)
+        public T AddEntity<T, S>(EntityType type, string entityId, Vector3 pos, Quaternion rotate)
             where T : Entity, new()
+            where S : EntityData, new()
         {
             //var entityType = typeof(T);
             //var attr = entityType.GetCustomAttribute<GameEntityAttribute>();
@@ -89,12 +91,14 @@ namespace Framework.Runtime
                 Debug.LogWarning($"This entity does not have JSON");
                 return null;
             }
-            GameObject prefab = Resources.Load<GameObject>(json[EntityData.PrefabFieldName].ToString());
+            S data = new S();
+            data.JsonDeserialize(json);
+            GameObject prefab = Resources.Load<GameObject>(data.EntityPrefab);
             if (prefab == null) return null;
             GameObject go = GameObject.Instantiate(prefab, pos, rotate == Quaternion.identity ? prefab.transform.rotation : rotate);
             T entity = go.AddComponent<T>();
             entity.EntityMgr = this;
-            entity.Deserialize(json);
+            entity.Deserialize(data);
             if (!_entities.TryGetValue(type, out var dict))
             {
                 dict = new Dictionary<string, List<Entity>>();

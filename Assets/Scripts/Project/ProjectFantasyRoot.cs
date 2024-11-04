@@ -43,7 +43,7 @@ namespace Project
             {
                 yield return 0;
             }
-            var player = _entities.AddEntity<PlayerEntity>(EntityType.Player, "1000", Vector3.zero, Quaternion.identity);
+            var player = _entities.AddEntity<PlayerEntity, CharacterEntityData>(EntityType.Player, "1000", Vector3.zero, Quaternion.identity);
             CameraCtrl.BindTraget(player.transform);
         }
     }

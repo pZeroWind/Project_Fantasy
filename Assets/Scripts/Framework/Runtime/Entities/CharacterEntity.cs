@@ -4,7 +4,7 @@
  * 创建时间：2024/10/19
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/19
+ * 最后编辑时间：2024/11/5
  * 
  * 文件描述：
  * 角色实体运行时抽象类
@@ -35,11 +35,6 @@ namespace Framework.Runtime
                 _currentExp += value;
                 LevelUpHandle();
             }
-        }
-
-        public override EntityData OnGenerateEntityData()
-        {
-            return new CharacterEntityData();
         }
 
         private void LevelUpHandle()

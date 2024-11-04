@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/19
+ * 最后编辑时间：2024/11/5
  * 
  * 文件描述：
  * 角色实体运行时抽象类
@@ -32,7 +32,7 @@ namespace Framework.Runtime
 
         public Entity()
         {
-            Data = OnGenerateEntityData();
+
         }
 
         IEnumerator Start()
@@ -61,8 +61,6 @@ namespace Framework.Runtime
             OnLateUpdate(Time.deltaTime * TimeScale);
         }
 
-        public abstract EntityData OnGenerateEntityData();
-
         public virtual void OnStart() { }
 
         public virtual void OnUpdate(float fTick) { }
@@ -76,9 +74,9 @@ namespace Framework.Runtime
             return Data.JsonSerialize();
         }
 
-        public virtual void Deserialize(JObject json)
+        public virtual void Deserialize(EntityData entity)
         {
-            Data.JsonDeserialize(json);
+            Data = entity;
         }
 
         public S As<S>() where S : Entity
