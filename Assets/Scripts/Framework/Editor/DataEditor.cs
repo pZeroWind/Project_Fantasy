@@ -4,7 +4,7 @@
  * 创建时间：2024/10/1
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/17
+ * 最后编辑时间：2024/11/4
  * 
  * 文件描述：
  * 编辑器工具 用于编辑游戏内各项数据
@@ -43,7 +43,7 @@ namespace Framework.Editor
 
         private DataEditorType _editorType = DataEditorType.Entity;
 
-        private bool _json = false;
+        //private bool _json = false;
 
         [MenuItem("游戏数据/实体数据")]
         public static void OnLoadEntityDataEditor()
@@ -260,31 +260,35 @@ namespace Framework.Editor
                                 queue.Enqueue((jField.Name, (JObject)curObj[jName], field.FieldType));
                             }
                             break;
-                        //case JsonType.GameObject:
-                        //    {
-                        //        if (curObj[jName] == null) curObj.Add(jName, string.Empty);
-                        //        curObj[jName] = EditorGUILayout.ObjectField("选择预制体", Resources.Load<GameObject>(curObj[jName].ToString()), typeof(GameObject), false).GetInstanceID();
-                        //    }
-                        //    break;
+                        case JsonType.GameObject:
+                            {
+                                if (curObj[jName] == null) curObj.Add(jName, string.Empty);
+                                curObj[jName] = 
+                                    AssetDatabase.GetAssetPath(EditorGUILayout.ObjectField(Resources.Load<GameObject>(curObj[jName].ToString()), typeof(GameObject), false)).
+                                        Replace("Assets/Resources/",string.Empty).
+                                        Replace(".prefab", string.Empty);
+                                Debug.Log(curObj[jName]);
+                            }
+                            break;
                     }
                 }
             }
-            if (!_json)
-            {
-                if (GUILayout.Button("查看JSON"))
-                {
-                    _json = !_json;
-                }
-            }
-            else if (_json)
-            {
-                if (GUILayout.Button("隐藏JSON"))
-                {
-                    _json = !_json;
-                }
-                var json = jsonArray[_currentIndex];
-                GUILayout.TextArea(json.ToString());
-            }
+            //if (!_json)
+            //{
+            //    if (GUILayout.Button("查看JSON"))
+            //    {
+            //        _json = !_json;
+            //    }
+            //}
+            //else if (_json)
+            //{
+            //    if (GUILayout.Button("隐藏JSON"))
+            //    {
+            //        _json = !_json;
+            //    }
+            //    var json = jsonArray[_currentIndex];
+            //    GUILayout.TextArea(json.ToString());
+            //}
             if (GUILayout.Button("保存当前数据"))
             {
                 OnSaveData(jsonArray[_currentIndex]);

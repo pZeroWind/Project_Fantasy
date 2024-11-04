@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/18
+ * 最后编辑时间：2024/11/4
  * 
  * 文件描述：
  * 玩家实体运行时
@@ -17,7 +17,6 @@ using UnityEngine;
 
 namespace Project.Entities
 {
-    [GameEntity("Prefabs/Characters/Player")]
     public class PlayerEntity : CharacterEntity
     {
         [InjectObject]
@@ -25,12 +24,12 @@ namespace Project.Entities
 
         public Animator Animator;
 
-        public Rigidbody2D RigidBody;
+        public CharacterController Controller;
 
         public override void OnStart()
         {
             Animator = GetComponent<Animator>();
-            RigidBody = GetComponent<Rigidbody2D>();
+            Controller = GetComponent<CharacterController>();
             StateMachine.AddState<PlayerIdle>(StateType.Idle);
             StateMachine.AddState<PlayerMove>(StateType.Move);
         }

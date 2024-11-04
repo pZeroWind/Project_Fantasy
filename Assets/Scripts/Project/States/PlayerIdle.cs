@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/18
+ * 最后编辑时间：2024/11/5
  * 
  * 文件描述：
  * 玩家待机状态
@@ -23,7 +23,7 @@ namespace Project.States
         {
             if (entity is PlayerEntity player)
             {
-                AddCanToState(StateType.Move, () => player.InputService.Move != Vector2.zero);
+                AddCanToState(StateType.Move, () => player.InputService.Move != Vector3.zero);
             }
         }
 
@@ -31,7 +31,6 @@ namespace Project.States
         {
             if (entity is PlayerEntity player)
             {
-                player.RigidBody.velocity = Vector2.zero;
                 player.Animator.SetAnimation(StateType.Idle.ToString());
             }
         }

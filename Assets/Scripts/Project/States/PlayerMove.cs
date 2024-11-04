@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/18
+ * 最后编辑时间：2024/11/5
  * 
  * 文件描述：
  * 玩家移动状态
@@ -30,7 +30,7 @@ namespace Project.States
         {
             if (entity.Is<PlayerEntity>(out var player))
             {
-                AddCanToState(StateType.Idle, () => player.InputService.Move == Vector2.zero);
+                AddCanToState(StateType.Idle, () => player.InputService.Move == Vector3.zero);
             }
         }
 
@@ -49,25 +49,15 @@ namespace Project.States
                 // 计算旋转角度
                 _x = player.transform.rotation.eulerAngles.x;
                 _z = player.transform.rotation.eulerAngles.z;
+                float speed = player.Data.As<CharacterEntityData>().PropertyData.Speed / 10;
+                Vector3 movePosition = player.InputService.Move;
+                player.Controller.Move(fTick * speed * movePosition);
                 if (player.InputService.Move.x != 0)
                 {
                     _rotate = player.InputService.Move.x > 0 ? 180 : 0;
                     _x = player.InputService.Move.x > 0 ? -_x : _x;
                 }
                 player.transform.rotation = Quaternion.Euler(_x, _rotate, _z);
-            }
-        }
-
-        public override void OnExecuteFixedState(Entity entity, float fiexdTick)
-        {
-            if(entity.Is<PlayerEntity>(out var player))
-            {
-                float speed = player.Data.As<CharacterEntityData>().PropertyData.Speed / 10;
-                Vector2 movePosition = player.InputService.Move;
-                Vector2 currentPosition = player.RigidBody.position;
-                player.RigidBody.MovePosition(
-                    Vector2.MoveTowards(currentPosition, currentPosition + movePosition, speed * fiexdTick)
-                    );
             }
         }
     }

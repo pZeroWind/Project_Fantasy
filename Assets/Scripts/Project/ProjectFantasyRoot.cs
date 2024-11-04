@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/13
+ * 最后编辑时间：2024/11/4
  * 
  * 文件描述：
  * 项目的启动根节点
@@ -44,7 +44,7 @@ namespace Project
                 yield return 0;
             }
             var player = _entities.AddEntity<PlayerEntity>(EntityType.Player, "1000", Vector3.zero, Quaternion.identity);
-            CameraCtrl.BindEntity(player);
+            CameraCtrl.BindTraget(player.transform);
         }
     }
 }

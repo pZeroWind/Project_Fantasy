@@ -1,6 +1,7 @@
 ﻿{
   "EntityId": "1001",
   "Name": "InferiorSprite",
+  "EntityPrefab": "",
   "EntityDataType": "Character",
   "PropertyData": {
     "Atk": 50.0,

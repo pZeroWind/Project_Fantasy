@@ -4,7 +4,7 @@
  * 创建时间：2024/10/2
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/13
+ * 最后编辑时间：2024/11/4
  * 
  * 文件描述：
  * 管理当前程序中所有的实体
@@ -67,7 +67,7 @@ namespace Framework.Runtime
             foreach (var txt in textArr)
             {
                 var json = JObject.Parse(txt.text);
-                _entityJson.Add(json["EntityId"].Value<string>(), json);
+                _entityJson.Add(json[EntityData.IDFieldName].Value<string>(), json);
             }
         }
 
@@ -77,19 +77,19 @@ namespace Framework.Runtime
         public T AddEntity<T>(EntityType type, string entityId, Vector3 pos, Quaternion rotate)
             where T : Entity, new()
         {
-            var entityType = typeof(T);
-            var attr = entityType.GetCustomAttribute<GameEntityAttribute>();
-            if (attr == null)
-            {
-                Debug.LogWarning($"This entity is not GameEnitiy");
-                return null;
-            }
+            //var entityType = typeof(T);
+            //var attr = entityType.GetCustomAttribute<GameEntityAttribute>();
+            //if (attr == null)
+            //{
+            //    Debug.LogWarning($"This entity is not GameEnitiy");
+            //    return null;
+            //}
             if (!_entityJson.TryGetValue(entityId, out var json))
             {
                 Debug.LogWarning($"This entity does not have JSON");
                 return null;
             }
-            GameObject prefab = Resources.Load<GameObject>(attr.ResPath);
+            GameObject prefab = Resources.Load<GameObject>(json[EntityData.PrefabFieldName].ToString());
             if (prefab == null) return null;
             GameObject go = GameObject.Instantiate(prefab, pos, rotate == Quaternion.identity ? prefab.transform.rotation : rotate);
             T entity = go.AddComponent<T>();

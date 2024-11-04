@@ -1,6 +1,7 @@
 ﻿{
   "EntityId": "1000",
   "Name": "Player",
+  "EntityPrefab": "Prefabs/Characters/Player",
   "EntityDataType": "Character",
   "PropertyData": {
     "Atk": 50.0,
