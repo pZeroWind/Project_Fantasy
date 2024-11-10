@@ -11,8 +11,6 @@
  */
 
 using Framework.Runtime;
-using Framework.Runtime.Behavior;
-using Project.Entities;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -45,6 +43,7 @@ namespace Project
             }
             var player = _entities.AddEntity<PlayerEntity, CharacterEntityData>(EntityType.Player, "1000", Vector3.zero, Quaternion.identity);
             CameraCtrl.BindTraget(player.transform);
+            CameraCtrl.SetEdge(new Vector3(15, 0, -4));
         }
     }
 }

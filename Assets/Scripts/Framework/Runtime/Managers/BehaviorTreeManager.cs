@@ -20,7 +20,7 @@ namespace Framework.Runtime.Behavior
 {
     public class BehaviorTreeManager : Singleton<BehaviorTreeManager>
     {
-        private const string ResRoot = "Resources/BehaviorTrees";
+        private const string ResRoot = "BehaviorTrees";
 
         private readonly Dictionary<string, BehaviorTree> _loadedTrees;
 
@@ -49,7 +49,7 @@ namespace Framework.Runtime.Behavior
             while (queue.Count > 0)
             {
                 (XElement Element, BehaviorNode ParentNode) = queue.Dequeue();
-                var type = _types.FirstOrDefault(t => t.Name == Element.Name.ToString());
+                var type = _types.FirstOrDefault(t => t.Name == Element.Name.LocalName);
                 if (type != null)
                 {
                     var obj = Activator.CreateInstance(type);
@@ -90,12 +90,6 @@ namespace Framework.Runtime.Behavior
             }
             // 若缓存中不存在树，尝试载入文件
             return LoadTree(name, XMLHelper.XmlLoad($"{ResRoot}/{name}"));
-        }
-
-        public override void Dispose()
-        {
-            _loadedTrees.Clear();
-            _types.Clear();
         }
     }
 }

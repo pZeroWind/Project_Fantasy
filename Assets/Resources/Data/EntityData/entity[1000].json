@@ -1,6 +1,8 @@
 ﻿{
   "EntityId": "1000",
   "Name": "Player",
+  "StateMachine": "Player",
+  "DefaultState": "PlayerIdleLState",
   "EntityPrefab": "Prefabs/Characters/Player",
   "EntityDataType": "Character",
   "PropertyData": {

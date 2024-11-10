@@ -64,7 +64,7 @@ namespace Framework.Runtime
         public void OnInit()
         {
             if (_services == null) throw new System.NullReferenceException();
-            var textArr = Resources.LoadAll<TextAsset>("Data/EntityData");
+            var textArr = GameResourceManager.Instance.LoadAll<TextAsset>("Data/EntityData");
             foreach (var txt in textArr)
             {
                 var json = JObject.Parse(txt.text);
@@ -93,7 +93,7 @@ namespace Framework.Runtime
             }
             S data = new S();
             data.JsonDeserialize(json);
-            GameObject prefab = Resources.Load<GameObject>(data.EntityPrefab);
+            GameObject prefab = GameResourceManager.Instance.Load<GameObject>(data.EntityPrefab);
             if (prefab == null) return null;
             GameObject go = GameObject.Instantiate(prefab, pos, rotate == Quaternion.identity ? prefab.transform.rotation : rotate);
             T entity = go.AddComponent<T>();

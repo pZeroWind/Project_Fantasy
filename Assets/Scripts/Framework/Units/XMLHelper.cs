@@ -10,6 +10,7 @@
  * 静态XML工具类
  */
 
+using Framework.Runtime;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,7 +23,15 @@ namespace Framework.Units
     {
         public static XElement XmlLoad(string path)
         {
-            XDocument xDoc = XDocument.Load($"{Application.dataPath}/{path}.xml");
+            var xmlAsset = GameResourceManager.Instance.Load<TextAsset>(path);
+            if (xmlAsset == null) return default;
+            XDocument xDoc = XDocument.Parse(xmlAsset.text);
+            return xDoc.Elements().FirstOrDefault();
+        }
+
+        public static XElement Parse(TextAsset xmlAsset)
+        {
+            XDocument xDoc = XDocument.Parse(xmlAsset.text);
             return xDoc.Elements().FirstOrDefault();
         }
 

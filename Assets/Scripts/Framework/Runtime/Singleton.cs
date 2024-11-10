@@ -12,7 +12,7 @@
 
 namespace Framework.Runtime
 {
-    public abstract class Singleton<T> : DisposableObject where T : Singleton<T>, new()
+    public abstract class Singleton<T> where T : Singleton<T>, new()
     {
         private static T _value = null;
 

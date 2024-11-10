@@ -25,7 +25,7 @@ namespace Framework.Editor
 {
     public class BehaviorEditor
     {
-        private readonly static string ResRoot = Application.dataPath + "/Resources/BehaviorTrees/";
+        private readonly static string ResRoot = Application.dataPath + "/Resources/BehaviorTrees";
 
         [MenuItem("行为树/创建行为树")]
         public static void OnCreateXML()
@@ -40,7 +40,7 @@ namespace Framework.Editor
                     string.Empty
                     )
             };
-            XMLHelper.XmlSave(list, $"Resources/BehaviorTrees//NewTree[{Guid.NewGuid().ToString("N")}]");
+            XMLHelper.XmlSave(list, $"Resources/BehaviorTrees/NewTree[{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}]");
             AssetDatabase.Refresh();
         }
 

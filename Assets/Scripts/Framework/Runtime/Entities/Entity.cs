@@ -10,6 +10,7 @@
  * 角色实体运行时抽象类
  */
 
+using Framework.Runtime.States;
 using Framework.Units;
 using Newtonsoft.Json.Linq;
 using System.Collections;
@@ -38,8 +39,9 @@ namespace Framework.Runtime
         IEnumerator Start()
         {
             BuffMgr = new BuffManager();
-            StateMachine = new StateMachine(this);
+            StateMachine = new StateMachine();
             yield return new WaitUntil(() => BuffMgr != null && EntityMgr != null && StateMachine != null);
+            StateMachine.OnLoad(Data.StateMachine, Data.DefaultState);
             OnStart();
         }
 
@@ -52,8 +54,7 @@ namespace Framework.Runtime
 
         void FixedUpdate()
         {
-            OnFixedUpdate(Time.fixedDeltaTime * TimeScale);    
-            StateMachine.OnFixedUpdate(this, Time.fixedDeltaTime * TimeScale);
+            OnFixedUpdate(Time.fixedDeltaTime * TimeScale);
         }
 
         void LateUpdate()

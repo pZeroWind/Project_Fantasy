@@ -33,6 +33,12 @@ namespace Framework.Runtime
         [JsonField("实体名称", JsonType.String)]
         public string Name;
 
+        [JsonField("状态机文件夹", JsonType.String)]
+        public string StateMachine;
+
+        [JsonField("默认状态", JsonType.String)]
+        public string DefaultState;
+
         [JsonField("实体预制体", JsonType.GameObject)]
         public string EntityPrefab;
 

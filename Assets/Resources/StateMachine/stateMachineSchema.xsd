@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:tns="http://example.com/stateMachine" elementFormDefault="qualified" targetNamespace="http://example.com/stateMachine" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="State">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ActionEvents">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="AnimationPlayAction">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Name" />
+              <xs:element minOccurs="0" name="Time" />
+              <xs:element minOccurs="0" name="Duration" />
+              <xs:element minOccurs="0" name="Condition">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="InputMoveCondition">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="0" name="Invert" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="FindTargetAction">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Time" />
+              <xs:element minOccurs="0" name="Duration" />
+              <xs:element minOccurs="0" name="Condition">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="InputMoveCondition">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="0" name="Invert" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="MoveAction">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Time" />
+              <xs:element minOccurs="0" name="Duration" />
+              <xs:element minOccurs="0" name="Condition">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="InputMoveCondition">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="0" name="Invert" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TranslationEvents">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="TranslationEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Time" />
+              <xs:element minOccurs="0" name="ToState" />
+              <xs:element minOccurs="0" name="Condition">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="InputMoveCondition">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="0" name="Invert" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

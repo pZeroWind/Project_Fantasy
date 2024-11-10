@@ -26,7 +26,7 @@ namespace Framework.Runtime
 
         public static void OnInit()
         {
-            var jsonTexts = Resources.LoadAll<TextAsset>($"Data/BuffData");
+            var jsonTexts = GameResourceManager.Instance.LoadAll<TextAsset>($"Data/BuffData");
             foreach (var txt in jsonTexts)
             {
                 var json = JObject.Parse(txt.text);

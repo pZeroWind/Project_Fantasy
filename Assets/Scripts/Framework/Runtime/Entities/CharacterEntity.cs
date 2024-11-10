@@ -4,15 +4,12 @@
  * 创建时间：2024/10/19
  * 
  * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/11/5
+ * 最后编辑时间：2024/11/6
  * 
  * 文件描述：
  * 角色实体运行时抽象类
  */
 
-using Framework.Units;
-using Newtonsoft.Json.Linq;
-using System.Collections;
 using UnityEngine;
 
 namespace Framework.Runtime
@@ -24,6 +21,12 @@ namespace Framework.Runtime
         private float _currentExp = 0f;
 
         private readonly float _baseExp = 100f;
+
+        public CharacterController Controller;
+
+        public Animator Animator;
+
+        public Vector3 Move {  get; set; }
 
         public uint Level => _level;
 
@@ -57,6 +60,14 @@ namespace Framework.Runtime
         private float CalculateLevelUpExp(CharacterEntityData data)
         {
             return data.PropertyData.GrowExp * Mathf.Log((_level - 1), data.PropertyData.MultiplyExp) + _baseExp;
+        }
+
+        public override void OnUpdate(float fTick)
+        {
+            if (Controller != null) 
+            {
+                Controller.Move(10f * fTick * Vector3.down);
+            }
         }
     }
 }

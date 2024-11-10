@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<State xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://example.com/stateMachine ../stateMachineSchema.xsd" xmlns="http://example.com/stateMachine">
+	<ActionEvents>
+		<!--播放向右待机动画-->
+		<AnimationPlayAction>
+			<Name>Idle_R</Name>
+		</AnimationPlayAction>
+	</ActionEvents>
+	<TranslationEvents>
+		<!--切换到向右待机状态-->
+		<TranslationEvent>
+			<Time>0.84</Time>
+			<ToState>PlayerIdleRState</ToState>
+			<Condition>
+				<InputMoveCondition>
+					<Invert>true</Invert>
+				</InputMoveCondition>
+			</Condition>
+		</TranslationEvent>
+		<TranslationEvent>
+			<ToState>PlayerMoveRState</ToState>
+			<Condition>
+				<InputMoveCondition>
+				</InputMoveCondition>
+			</Condition>
+		</TranslationEvent>
+	</TranslationEvents>
+</State>

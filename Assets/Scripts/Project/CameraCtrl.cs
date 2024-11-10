@@ -10,6 +10,7 @@
  * 用于控制摄像机位置
  */
 
+using Framework.Runtime;
 using System;
 using UnityEngine;
 
@@ -22,21 +23,43 @@ namespace Project
         [Range(0f, 1f)]
         public float Damping = 0.1f;
 
-        private Vector3 _velocity = Vector3.zero;
+        public Vector3 Edge = Vector3.zero;
 
         public void BindTraget(Transform target)
         {
             Target = target;
         }
 
+        public void SetEdge(Vector3 edge)
+        {
+            Edge = edge;
+        }
+
         // Update is called once per frame
         void LateUpdate()
         {
-            Vector2 pos = transform.position;
+            Vector3 pos = transform.position;
+            
             if (Target != null) 
             {
-                pos = Vector3.SmoothDamp(pos, Target.transform.position, ref _velocity, Damping);
+                pos = Vector3.Lerp(pos, Target.transform.position, Damping);
             }
+
+            if (Edge.z > pos.z)
+            {
+                pos.z = Edge.z;
+            }
+
+            if(Edge.x < pos.x)
+            {
+                pos.x = Edge.x;
+            }
+
+            if (-Edge.x > pos.x)
+            {
+                pos.x = -Edge.x;
+            }
+
             transform.position = pos;
         }
     }
