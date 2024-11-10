@@ -12,7 +12,6 @@ namespace Framework.Runtime.States
         {
             if (entity.Is<CharacterEntity>(out var character))
             {
-                Debug.Log(Name);
                 character.Animator.SetAnimation(Name, 0.1f);
             }
         }

@@ -25,12 +25,17 @@ namespace Framework.Runtime
         private IEnumerator Start()
         {
             _serviceContaniner = new GameServiceContainer();
+            GameLogManager.Instance.Info($"游戏服务容器初始化完毕");
             _entityManager = new EntityManager();
             yield return new WaitUntil(() => _serviceContaniner != null && _entityManager != null);
             _entityManager.OnInit(_serviceContaniner);
+            GameLogManager.Instance.Info($"实体管理器初始化完毕");
             BuffManager.OnInit();
+            GameLogManager.Instance.Info($"BUFF管理器全局缓存加载完毕");
             OnInitialize(_serviceContaniner);
+            GameLogManager.Instance.Info($"游戏框架初始化完毕");
             OnMounted(_entityManager);
+            GameLogManager.Instance.Info($"场景内容加载完毕");
         }
 
         private void OnDestroy()
@@ -44,7 +49,7 @@ namespace Framework.Runtime
         public abstract void OnInitialize(GameServiceContainer service);
 
         /// <summary>
-        /// 框架内容初始化完毕
+        /// 场景内容加载
         /// </summary>
         /// <returns></returns>
         public abstract void OnMounted(EntityManager entities);

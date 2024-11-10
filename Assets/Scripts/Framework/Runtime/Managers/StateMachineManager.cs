@@ -109,10 +109,6 @@ namespace Framework.Runtime
                 var xml = XMLHelper.Parse(textAsset);
                 State state = new State();
                 state.StateName = textAsset.name;
-                foreach(var stateObj in xml.Elements())
-                {
-                    Debug.Log(stateObj.Name.LocalName);
-                }
                 var actionXml = xml.Elements().FirstOrDefault(x => x.Name.LocalName == "ActionEvents");
                 foreach (var action in actionXml.Elements())
                 {
@@ -140,6 +136,7 @@ namespace Framework.Runtime
             {
                 states = OnLoad(name);
                 _stateMachines.Add(name, states);
+                GameLogManager.Instance.Info($"状态机 {name} 加载完成");
             }
             return states.Select(state => state.Clone());
         }

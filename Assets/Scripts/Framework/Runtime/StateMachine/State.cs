@@ -57,7 +57,6 @@ namespace Framework.Runtime.States
         /// </summary>
         public void OnExecuteState(Entity entity, float fTick)
         {
-            Debug.Log(entity.StateMachine.CurrentState);
             _lifeTime += fTick;
             foreach (var action in ActionEvents)
             {
