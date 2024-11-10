@@ -1,2 +1,5 @@
 # Project_Fantasy
-正在开发中的像素风格Arpg Rouge Demo
+状态：开发中  
+Unity 版本：2022.3.48f1c1  
+类型：Arpg Rougelite  
+
