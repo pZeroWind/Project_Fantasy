@@ -15,9 +15,9 @@ namespace Framework.Runtime.States
     {
         protected override bool OnCondition(Entity entity)
         {
-            if(entity.Is<PlayerEntity>(out var player))
+            if(entity.Is<CharacterEntity>(out var character))
             {
-                return player.Move != Vector3.zero;
+                return character.Move != Vector3.zero;
             }
             return false;
         }

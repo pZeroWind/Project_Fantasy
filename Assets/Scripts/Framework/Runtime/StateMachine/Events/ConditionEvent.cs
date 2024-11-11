@@ -11,7 +11,7 @@ namespace Framework.Runtime.States
 {
     public abstract class ConditionEvent : IEvent, ICloneable<ConditionEvent>
     {
-        public bool Invert;
+        public bool Invert = false;
 
         protected abstract bool OnCondition(Entity entity);
 

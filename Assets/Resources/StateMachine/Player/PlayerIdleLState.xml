@@ -9,7 +9,7 @@
 	<TranslationEvents>
 		<!--切换到向左待机状态-->
 		<TranslationEvent>
-			<Time>0.84</Time>
+			<Time>0.85</Time>
 			<ToState>PlayerIdleLState</ToState>
 			<Condition>
 				<InputMoveCondition>
@@ -20,8 +20,17 @@
 		<TranslationEvent>
 			<ToState>PlayerMoveRState</ToState>
 			<Condition>
+				<DirectionCondition>
+					<Direction>1</Direction>
+				</DirectionCondition>
 				<InputMoveCondition>
 				</InputMoveCondition>
+			</Condition>
+		</TranslationEvent>
+		<TranslationEvent>
+			<ToState>PlayerMoveLState</ToState>
+			<Condition>
+				<InputMoveCondition></InputMoveCondition>
 			</Condition>
 		</TranslationEvent>
 	</TranslationEvents>

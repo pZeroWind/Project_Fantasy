@@ -29,7 +29,7 @@ namespace Framework.Runtime
         Effect
     }
 
-    public class EventManager : IGameManager
+    public class EventManager : MonoSingleton<EventManager>,IGameManager
     {
         private readonly Dictionary<string, GameEvent> _gameEvents = new Dictionary<string, GameEvent>();
         

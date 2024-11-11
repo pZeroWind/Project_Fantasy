@@ -1,16 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <State xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://example.com/stateMachine ../stateMachineSchema.xsd" xmlns="http://example.com/stateMachine">
 	<ActionEvents>
-		<!--播放向右待机动画-->
+		<!--播放向左移动动画-->
 		<AnimationPlayAction>
-			<Name>Idle_R</Name>
+			<Name>Move_L</Name>
 		</AnimationPlayAction>
+		<EffectPlayAction>
+			<Name>EffectFugitiveDust</Name>
+			<Time>0.675</Time>
+		</EffectPlayAction>
+		<MoveAction>
+			<Duration>1.35</Duration>
+		</MoveAction>
 	</ActionEvents>
 	<TranslationEvents>
-		<!--切换到向右待机状态-->
+		<!--切换到向左待机状态-->
 		<TranslationEvent>
-			<Time>0.85</Time>
-			<ToState>PlayerIdleRState</ToState>
+			<ToState>PlayerIdleLState</ToState>
 			<Condition>
 				<InputMoveCondition>
 					<Invert>true</Invert>
@@ -18,16 +24,18 @@
 			</Condition>
 		</TranslationEvent>
 		<TranslationEvent>
-			<ToState>PlayerMoveLState</ToState>
+			<ToState>PlayerMoveRState</ToState>
 			<Condition>
 				<DirectionCondition>
-					<Direction>-1</Direction>
+					<Direction>1</Direction>
 				</DirectionCondition>
-				<InputMoveCondition></InputMoveCondition>
+				<InputMoveCondition>
+				</InputMoveCondition>
 			</Condition>
 		</TranslationEvent>
 		<TranslationEvent>
-			<ToState>PlayerMoveRState</ToState>
+			<Time>1.35</Time>
+			<ToState>PlayerMoveLState</ToState>
 			<Condition>
 				<InputMoveCondition>
 				</InputMoveCondition>

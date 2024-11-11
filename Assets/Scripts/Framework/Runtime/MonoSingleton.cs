@@ -28,7 +28,8 @@ namespace Framework.Runtime
                         if (_value == null)
                         {
                             var go = new GameObject();
-                            go.AddComponent<T>();
+                            go.name = typeof(T).Name;
+                            _value = go.AddComponent<T>();
                             DontDestroyOnLoad(go);
                         }
                     }
