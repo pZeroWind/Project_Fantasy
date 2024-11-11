@@ -1,13 +1,10 @@
 ﻿/*
- * 文件名：Singleton.cs
+ * 文件名：MonoSingleton.cs
  * 作者：ZeroWind
  * 创建时间：2024/10/2
  * 
- * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/17
- * 
  * 文件描述：
- * 代表当前类为全局单例
+ * 代表当前类为全局GameObject单例
  */
 
 using UnityEngine;

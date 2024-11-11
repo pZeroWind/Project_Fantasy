@@ -1,13 +1,10 @@
 ﻿/*
- * 文件名：LeafNode.cs
+ * 文件名：Blackborad.cs
  * 作者：ZeroWind
  * 创建时间：2024/10/13
  * 
- * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/17
- * 
  * 文件描述：
- * 行为树类
+ * 行为树黑板类-储存行为树运行时储存的临时数据
  */
 
 using System.Collections.Generic;

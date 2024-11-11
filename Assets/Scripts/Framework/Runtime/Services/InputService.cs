@@ -1,13 +1,10 @@
-/*
- * ÎÄ¼şÃû£ºInputService.cs
- * ×÷Õß£ºZeroWind
- * ´´½¨Ê±¼ä£º2024/10/2
+ï»¿/*
+ * æ–‡ä»¶åï¼šInputService.cs
+ * ä½œè€…ï¼šZeroWind
+ * åˆ›å»ºæ—¶é—´ï¼š2024/10/2
  * 
- * ×îºó±à¼­Õß£ºZeroWind
- * ×îºó±à¼­Ê±¼ä£º2024/11/10
- * 
- * ÎÄ¼şÃèÊö£º
- * ÊäÈë·şÎñÀà
+ * æ–‡ä»¶æè¿°ï¼š
+ * è¾“å…¥æœåŠ¡ç±»
  */
 
 using UnityEngine;
@@ -24,7 +21,7 @@ namespace Framework.Runtime
         }
 
         /// <summary>
-        /// ÒÆ¶¯·½·¨
+        /// ç§»åŠ¨æ–¹æ³•
         /// </summary>
         /// <param name="character"></param>
         private void OnMove(CharacterEntity character)

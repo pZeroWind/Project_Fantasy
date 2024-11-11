@@ -1,4 +1,13 @@
-﻿using UnityEngine;
+﻿/*
+ * 文件名：GameResourceManager.cs
+ * 作者：ZeroWind
+ * 创建时间：2024/11/10
+ * 
+ * 文件描述：
+ * 游戏资源管理器类
+ */
+
+using UnityEngine;
 
 namespace Framework.Runtime
 {

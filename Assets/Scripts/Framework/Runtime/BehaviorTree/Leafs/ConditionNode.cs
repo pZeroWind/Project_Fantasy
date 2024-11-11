@@ -3,11 +3,8 @@
  * 作者：ZeroWind
  * 创建时间：2024/10/18
  * 
- * 最后编辑者：ZeroWind
- * 最后编辑时间：2024/10/18
- * 
  * 文件描述：
- * 行动节点
+ * 条件节点
  */
 namespace Framework.Runtime.Behavior.Leafs
 {

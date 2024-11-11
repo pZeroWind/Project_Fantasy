@@ -1,3 +1,12 @@
+﻿/*
+ * 文件名：InputMoveCondition.cs
+ * 作者：ZeroWind
+ * 创建时间：2024/11/10
+ * 
+ * 文件描述：
+ * 状态机判断是否输入移动信息条件
+ */
+
 using UnityEngine;
 
 namespace Framework.Runtime.States
