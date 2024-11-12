@@ -10,7 +10,6 @@
 using Framework.Units;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 namespace Framework.Runtime
@@ -50,6 +49,8 @@ namespace Framework.Runtime
 
         private readonly Dictionary<string, JObject> _entityJson = new Dictionary<string, JObject>();
 
+        private BuffManager _buffManager;
+
         private GameServiceContainer _services;
 
         public void OnInit(GameServiceContainer services)
@@ -61,6 +62,8 @@ namespace Framework.Runtime
         public void OnInit()
         {
             if (_services == null) throw new System.NullReferenceException();
+            _buffManager = new BuffManager();
+            _buffManager.OnInit();
             var textArr = GameResourceManager.Instance.LoadAll<TextAsset>("Data/EntityData");
             foreach (var txt in textArr)
             {
@@ -76,13 +79,6 @@ namespace Framework.Runtime
             where T : Entity, new()
             where S : EntityData, new()
         {
-            //var entityType = typeof(T);
-            //var attr = entityType.GetCustomAttribute<GameEntityAttribute>();
-            //if (attr == null)
-            //{
-            //    Debug.LogWarning($"This entity is not GameEnitiy");
-            //    return null;
-            //}
             if (!_entityJson.TryGetValue(entityId, out var json))
             {
                 Debug.LogWarning($"This entity does not have JSON");
@@ -94,6 +90,7 @@ namespace Framework.Runtime
             if (prefab == null) return null;
             GameObject go = GameObject.Instantiate(prefab, pos, rotate == Quaternion.identity ? prefab.transform.rotation : rotate);
             T entity = go.AddComponent<T>();
+            entity.BuffMgr = _buffManager;
             entity.EntityMgr = this;
             entity.Deserialize(data);
             if (!_entities.TryGetValue(type, out var dict))

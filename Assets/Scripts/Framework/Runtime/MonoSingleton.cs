@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Framework.Runtime
 {
-    public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
+    public abstract class MonoSingleton<T> : MonoBehaviour, IGameManager where T : MonoSingleton<T>
     {
         private static T _value = null;
 
@@ -30,6 +30,7 @@ namespace Framework.Runtime
                             var go = new GameObject();
                             go.name = typeof(T).Name;
                             _value = go.AddComponent<T>();
+                            _value.OnInit();
                             DontDestroyOnLoad(go);
                         }
                     }
@@ -37,6 +38,8 @@ namespace Framework.Runtime
                 return _value;
             }
         }
+
+        public virtual void OnInit() { }
     }
 }
 

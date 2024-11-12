@@ -9,13 +9,13 @@
 
 namespace Framework.Runtime
 {
-    public abstract class Singleton<T> where T : Singleton<T>, new()
+    public abstract class Singleton<T> : IGameManager where T : Singleton<T>, new()
     {
         private static T _value = null;
 
         private static readonly object _lock = new object();
 
-        protected virtual void OnInit() { }
+        public virtual void OnInit() { }
 
         public static T Instance
         {

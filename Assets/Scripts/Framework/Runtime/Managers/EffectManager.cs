@@ -1,10 +1,10 @@
 ﻿/*
- * 文件名：EventManager.cs
+ * 文件名：EffectManager.cs
  * 作者：ZeroWind
- * 创建时间：2024/10/7
+ * 创建时间：2024/11/12
  * 
  * 文件描述：
- * 游戏运行时的事件管理器
+ * 特效管理器
  */
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -35,14 +35,14 @@ namespace Framework.Runtime
         }
     }
 
-    public class EffectManager : MonoSingleton<EffectManager>, IGameManager
+    public class EffectManager : MonoSingleton<EffectManager>
     {
         private float _idleTime = 5f;
         
         private readonly Dictionary<string, Queue<ParticleSystem>> _particleQueueHash = new Dictionary<string, Queue<ParticleSystem>>();
         private readonly Dictionary<string, GameObject> _prefabHash = new Dictionary<string, GameObject>();
         private readonly ConcurrentDictionary<ParticleSystem, float> _poolHash = new ConcurrentDictionary<ParticleSystem, float>();
-        public void OnInit()
+        public override void OnInit()
         {
             var list = GameResourceManager.Instance.LoadAll<GameObject>("Prefabs/Effects");
             foreach (var particle in list)

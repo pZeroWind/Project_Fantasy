@@ -15,13 +15,13 @@ using UnityEngine;
 
 namespace Framework.Runtime
 {
-    public class BuffManager
+    public class BuffManager : IGameManager
     {
         private readonly List<Buff> _buffs = new List<Buff>();
 
-        private static readonly Dictionary<string, JObject> _buffData = new Dictionary<string, JObject>();
+        private readonly Dictionary<string, JObject> _buffData = new Dictionary<string, JObject>();
 
-        public static void OnInit()
+        public void OnInit()
         {
             var jsonTexts = GameResourceManager.Instance.LoadAll<TextAsset>($"Data/BuffData");
             foreach (var txt in jsonTexts)

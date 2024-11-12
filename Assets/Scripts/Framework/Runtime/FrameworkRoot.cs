@@ -27,10 +27,6 @@ namespace Framework.Runtime
             yield return new WaitUntil(() => _serviceContaniner != null && _entityManager != null);
             _entityManager.OnInit(_serviceContaniner);
             GameLogManager.Instance.Info($"实体管理器初始化完毕");
-            BuffManager.OnInit();
-            GameLogManager.Instance.Info($"BUFF管理器全局缓存加载完毕");
-            EffectManager.Instance.OnInit();
-            GameLogManager.Instance.Info($"特效管理器加载完毕");
             OnInitialize(_serviceContaniner);
             GameLogManager.Instance.Info($"游戏框架初始化完毕");
             OnMounted(_entityManager);

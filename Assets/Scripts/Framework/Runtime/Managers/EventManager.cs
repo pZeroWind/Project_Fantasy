@@ -29,11 +29,11 @@ namespace Framework.Runtime
         Effect
     }
 
-    public class EventManager : MonoSingleton<EventManager>,IGameManager
+    public class EventManager : MonoSingleton<EventManager>
     {
         private readonly Dictionary<string, GameEvent> _gameEvents = new Dictionary<string, GameEvent>();
         
-        public void OnInit()
+        public override void OnInit()
         {
 
         }

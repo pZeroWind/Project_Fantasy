@@ -28,14 +28,8 @@ namespace Framework.Runtime
         [Range(0f, 1f)]
         public float TimeScale = 1.0f;
 
-        public Entity()
-        {
-
-        }
-
         IEnumerator Start()
         {
-            BuffMgr = new BuffManager();
             StateMachine = new StateMachine();
             yield return new WaitUntil(() => BuffMgr != null && EntityMgr != null && StateMachine != null);
             StateMachine.OnLoad(Data.StateMachine, Data.DefaultState);

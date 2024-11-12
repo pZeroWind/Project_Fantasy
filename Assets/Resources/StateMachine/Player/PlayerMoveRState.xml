@@ -7,6 +7,10 @@
 		</AnimationPlayAction>
 		<EffectPlayAction>
 			<Name>EffectFugitiveDust</Name>
+			<Time>0</Time>
+		</EffectPlayAction>
+		<EffectPlayAction>
+			<Name>EffectFugitiveDust</Name>
 			<Time>0.675</Time>
 		</EffectPlayAction>
 		<MoveAction>

@@ -31,7 +31,7 @@ namespace Framework.Editor
     {
 
         #region 实体数据
-        private List<JObject> jsonArray = new List<JObject>();
+        private List<JObject> _jsonArray = new List<JObject>();
         #endregion
 
         private int _currentIndex = -1;
@@ -64,7 +64,7 @@ namespace Framework.Editor
             _currentIndex = -1;
             _editorType = type;
             position = new Rect(100, 100, 800, 450);
-            jsonArray.Clear();
+            _jsonArray.Clear();
             switch (_editorType)
             {
                 case DataEditorType.Entity:
@@ -73,7 +73,7 @@ namespace Framework.Editor
                         foreach (var txt in textArr)
                         {
                             var json = JObject.Parse(txt.text);
-                            jsonArray.Add(json);
+                            _jsonArray.Add(json);
                         }
                     }
                     break;
@@ -83,7 +83,7 @@ namespace Framework.Editor
                         foreach (var txt in textArr)
                         {
                             var json = JObject.Parse(txt.text);
-                            jsonArray.Add(json);
+                            _jsonArray.Add(json);
                         }
                     }
                     break;
@@ -101,21 +101,25 @@ namespace Framework.Editor
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.BeginVertical(GUILayout.Width(200));
             EditorGUILayout.BeginHorizontal(GUILayout.Width(200));
-            if (GUILayout.Button("创建数据"))
+            if (GUILayout.Button("创建"))
             {
                 JObject obj = new JObject();
-                jsonArray.Add(obj);
+                _jsonArray.Add(obj);
             }
-            if (GUILayout.Button("删除数据"))
+            if (GUILayout.Button("删除"))
             {
-
+                OnRemoveData(_jsonArray[_currentIndex]);
             }
-            if (GUILayout.Button("刷新数据"))
+            if (GUILayout.Button("刷新"))
             {
                 OnInit(_editorType);
             }
+            if (GUILayout.Button("保存"))
+            {
+                OnSaveData(_jsonArray[_currentIndex]);
+            }
             GUILayout.EndHorizontal();
-            foreach (var jsonObject in jsonArray)
+            foreach (var jsonObject in _jsonArray)
             {
                 GUIStyle childStyle = new()
                 {
@@ -145,9 +149,9 @@ namespace Framework.Editor
                         background = Texture2D.whiteTexture
                     },
                 };
-                if (GUILayout.Button($"[{GetId(jsonObject)}]{GetName(jsonObject)}", _currentIndex != jsonArray.IndexOf(jsonObject) ? childStyle : childStyle_Selected))
+                if (GUILayout.Button($"[{GetId(jsonObject)}]{GetName(jsonObject)}", _currentIndex != _jsonArray.IndexOf(jsonObject) ? childStyle : childStyle_Selected))
                 {
-                    _currentIndex = jsonArray.IndexOf(jsonObject);
+                    _currentIndex = _jsonArray.IndexOf(jsonObject);
                 }
 
             }
@@ -157,7 +161,7 @@ namespace Framework.Editor
             _currentPosition = EditorGUILayout.BeginScrollView(_currentPosition);
             if (_currentIndex > -1)
             {
-                var e = jsonArray[_currentIndex];
+                var e = _jsonArray[_currentIndex];
                 if (e != null)
                 {
                     ShowData("基本数据", e);
@@ -264,31 +268,10 @@ namespace Framework.Editor
                                     AssetDatabase.GetAssetPath(EditorGUILayout.ObjectField(Resources.Load<GameObject>(curObj[jName].ToString()), typeof(GameObject), false)).
                                         Replace("Assets/Resources/",string.Empty).
                                         Replace(".prefab", string.Empty);
-                                Debug.Log(curObj[jName]);
                             }
                             break;
                     }
                 }
-            }
-            //if (!_json)
-            //{
-            //    if (GUILayout.Button("查看JSON"))
-            //    {
-            //        _json = !_json;
-            //    }
-            //}
-            //else if (_json)
-            //{
-            //    if (GUILayout.Button("隐藏JSON"))
-            //    {
-            //        _json = !_json;
-            //    }
-            //    var json = jsonArray[_currentIndex];
-            //    GUILayout.TextArea(json.ToString());
-            //}
-            if (GUILayout.Button("保存当前数据"))
-            {
-                OnSaveData(jsonArray[_currentIndex]);
             }
         }
 
@@ -359,6 +342,22 @@ namespace Framework.Editor
                 Debug.Log("Data File Save Success");
                 AssetDatabase.Refresh();
             }
+        }
+
+        private void OnRemoveData(JObject json)
+        {
+            string path = Application.dataPath;
+            path = _editorType switch
+            {
+                DataEditorType.Entity => $"{path}/Resources/Data/EntityData/entity[{GetId(json)}].json",
+                DataEditorType.Buff => $"{path}/Resources/Data/BuffData/buff[{GetId(json)}].json",
+                DataEditorType.Item => $"{path}/Resources/Data/ItemData/item[{GetId(json)}].json",
+                _ => path,
+            };
+            File.Delete(path);
+            Debug.Log("Data File Delete Success");
+            OnInit(_editorType);
+            AssetDatabase.Refresh();
         }
 
         private Type GetBindType(JObject data)
