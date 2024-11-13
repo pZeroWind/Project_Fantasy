@@ -8,19 +8,24 @@
  */
 
 using UnityEngine;
+using static UnityEditor.Profiling.HierarchyFrameDataView;
 
 namespace Framework.Runtime.UI
 {
-    public abstract class UIDefiner : MonoBehaviour
+    public abstract class UIDefiner<T> : MonoBehaviour where T : UIViewModel, new()
     {
-        public string Id = string.Empty;
+        public string Id;
 
-        public string Class = string.Empty;
+        public string Class;
+
+        public T ViewModel;
 
         protected abstract void OnInitialize();
 
         private void Start()
         {
+            ViewModel = new T();
+            ViewModel.BindView(gameObject);
             UIManager.Instance.AddUIDefiner(this);
             OnInitialize();
         }

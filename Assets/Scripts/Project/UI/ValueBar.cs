@@ -8,12 +8,14 @@
  */
 
 using Framework.Runtime.UI;
+using Project.UI.ViewModel;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Project.UI
 {
-    public class ValueBar : UIDefiner
+    public class ValueBar : UIDefiner<ValueBarViewModel>
     {
         public TMP_Text Name;
 
@@ -21,12 +23,8 @@ namespace Project.UI
 
         protected override void OnInitialize()
         {
-            //ValueSlider.On
-        }
-
-        public void ChangeValue(float value)
-        {
-            ValueSlider.value += value;
+            Name = transform.Find(nameof(Name)).GetComponent<TMP_Text>();
+            ValueSlider = transform.Find(nameof(ValueSlider)).GetComponent<Slider>();
         }
     }
 }

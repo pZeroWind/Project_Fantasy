@@ -7,78 +7,76 @@
  * UI管理器 集中管理当前场景下所有被定义的UI
  */
 
-using Framework.Runtime;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Framework.Runtime.UI
 {
     public class UIManager : MonoSingleton<UIManager>
     {
-        private readonly Dictionary<string, UIDefiner> _uiDefinerById = new Dictionary<string, UIDefiner>();
+        private readonly Dictionary<string, UIViewModel> _uiVModelById = new Dictionary<string, UIViewModel>();
 
-        private readonly Dictionary<string, List<UIDefiner>> _uiDefinerByClass = new Dictionary<string, List<UIDefiner>>();
+        private readonly Dictionary<string, List<UIViewModel>> _uiVModelByClass = new Dictionary<string, List<UIViewModel>>();
 
         /// <summary>
         /// 添加UI定义器
         /// </summary>
-        public void AddUIDefiner(UIDefiner definer)
+        public void AddUIDefiner<T>(UIDefiner<T> definer) where T : UIViewModel, new()
         {
             if (!string.IsNullOrEmpty(definer.Id))
             {
-                if (_uiDefinerById.ContainsKey(definer.Id))
+                if (_uiVModelById.ContainsKey(definer.Id))
                 {
                     GameLogManager.Instance.Error($"添加UIDefiner时错误 ID:[{definer.Id}]已被定义");
                     return;
                 }
-                _uiDefinerById[definer.Id] = definer;
+                _uiVModelById.Add(definer.Id, definer.ViewModel);
             }
 
             if (!string.IsNullOrEmpty(definer.Class))
             {
-                if (!_uiDefinerByClass.TryGetValue(definer.Class, out var list))
+                if (!_uiVModelByClass.TryGetValue(definer.Class, out var list))
                 {
-                    list = new List<UIDefiner>();
-                    _uiDefinerByClass[definer.Class] = list;
+                    list = new List<UIViewModel>();
+                    _uiVModelByClass[definer.Class] = list;
                 }
-                list.Add(definer);
+                list.Add(definer.ViewModel);
             }
         }
 
         /// <summary>
         /// 移除UI定义器
         /// </summary>
-        public void RemoveUIDefiner(UIDefiner definer)
+        public void RemoveUIDefiner<T>(UIDefiner<T> definer) where T : UIViewModel, new()
         {
             if (!string.IsNullOrEmpty(definer.Id))
-                _uiDefinerById.Remove(definer.Id);
+                _uiVModelById.Remove(definer.Id);
 
-            if (!string.IsNullOrEmpty(definer.Class) && _uiDefinerByClass.TryGetValue(definer.Class, out var list))
+            if (!string.IsNullOrEmpty(definer.Class) && _uiVModelByClass.TryGetValue(definer.Class, out var list))
             {
-                list.Remove(definer);
-                if (list.Count == 0) _uiDefinerByClass.Remove(definer.Class);
+                list.Remove(definer.ViewModel);
+                if (list.Count == 0) _uiVModelByClass.Remove(definer.Class);
             }
         }
 
         /// <summary>
         /// 按Id查找UI
         /// </summary>
-        public T FindById<T>(string id) where T : Object
+        public T FindById<T>(string id) where T : UIViewModel
         {
-            return _uiDefinerById.TryGetValue(id, out var definer) && definer.GetComponent<T>() is T result ?
+            return _uiVModelById.TryGetValue(id, out var vm) && vm is T result ?
                 result : null;
         }
 
         /// <summary>
         /// 按Class查找UI
         /// </summary>
-        public IEnumerable<T> FindByClass<T>(string className) where T : Object
+        public IEnumerable<T> FindByClass<T>(string className) where T : UIViewModel
         {
-            if (_uiDefinerByClass.TryGetValue(className, out var definers))
+            if (_uiVModelByClass.TryGetValue(className, out var vms))
             {
-                foreach (var definer in definers)
+                foreach (var vm in vms)
                 {
-                    if (definer.TryGetComponent<T>(out var result))
+                    if (vm is T result)
                         yield return result;
                 }
             }
