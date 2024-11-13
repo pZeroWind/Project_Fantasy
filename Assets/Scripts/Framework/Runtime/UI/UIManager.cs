@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace Framework.Runtime.UI
 {
-    public class UIManager : MonoSingleton<UIManager>
+    public class UIManager : Singleton<UIManager>
     {
         private readonly Dictionary<string, UIViewModel> _uiVModelById = new Dictionary<string, UIViewModel>();
 

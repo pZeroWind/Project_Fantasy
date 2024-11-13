@@ -8,7 +8,6 @@
  */
 
 using UnityEngine;
-using static UnityEditor.Profiling.HierarchyFrameDataView;
 
 namespace Framework.Runtime.UI
 {
