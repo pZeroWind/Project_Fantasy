@@ -8,7 +8,7 @@
  */
 
 using Framework.Runtime.UI;
-using Project.UI.ViewModel;
+using Project.UI.Presenter;
 using UnityEngine;
 
 namespace Framework.Runtime
@@ -22,7 +22,6 @@ namespace Framework.Runtime
         {
             Animator = GetComponent<Animator>();
             Controller = GetComponent<CharacterController>();
-            UIManager.Instance.FindById<ValueBarViewModel>("HpBar").Value = 0;
         }
 
         public override void OnUpdate(float fTick)
@@ -32,7 +31,6 @@ namespace Framework.Runtime
             {
                 InputService.OnUpdate(this);
             }
-            UIManager.Instance.FindById<ValueBarViewModel>("HpBar").Value += fTick / 10f; 
         }
     }
 }

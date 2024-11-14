@@ -8,14 +8,13 @@
  */
 
 using Framework.Runtime.UI;
-using Project.UI.ViewModel;
+using Project.UI.Presenter;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace Project.UI
 {
-    public class ValueBar : UIDefiner<ValueBarViewModel>
+    public class ValueBar : ViewDefiner<ValueBarPresenter>
     {
         public TMP_Text Name;
 
