@@ -17,6 +17,7 @@ namespace Project
     public class ProjectFantasyRoot : FrameworkRoot
     {
         public CameraCtrl CameraCtrl;
+
         private EntityManager _entities;
 
         public override void OnInitialize(GameServiceContainer service)
@@ -27,17 +28,19 @@ namespace Project
         public override void OnMounted(EntityManager entities)
         {
             _entities = entities;
-            AsyncOperation gameScene = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
-            AsyncOperation worldScene = SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive);
-            StartCoroutine(OnLoaded(gameScene));
+            StartCoroutine(OnLoaded());
         }
 
-        private IEnumerator OnLoaded(AsyncOperation operation)
+        private IEnumerator OnLoaded()
         {
-            while (!operation.isDone)
-            {
-                yield return 0;
-            }
+            AsyncOperation gameScene = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+            yield return new WaitUntil(() => gameScene.isDone);
+            var battle = GameObject.Instantiate(GameResourceManager.Instance.Load<GameObject>("Prefabs/UI/Pages/BattlePage"));
+            var uiRoot = GameObject.Find("UIRoot");
+            battle.transform.parent = uiRoot.transform;
+            AsyncOperation worldScene = SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive);
+            yield return new WaitUntil(() => worldScene.isDone);
+            var sql = SqliteManager.Instance;
             var player = _entities.AddEntity<PlayerEntity, CharacterEntityData>(EntityType.Player, "1000", Vector3.zero, Quaternion.identity);
             CameraCtrl.BindTraget(player.transform);
             CameraCtrl.SetEdge(new Vector3(15, 0, -4));

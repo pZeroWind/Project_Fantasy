@@ -24,9 +24,12 @@ namespace Framework.Runtime.UI
         private void Start()
         {
             Presenter = new T();
-            Presenter.InitPresenter(gameObject);
+            //初始化表示器
+            Presenter.OnInitalize(gameObject);
             ViewManager.Instance.AddDefiner(this);
             OnInitialize();
+            //渲染表示器
+            Presenter.OnRender();
         }
 
         private void OnDestroy()

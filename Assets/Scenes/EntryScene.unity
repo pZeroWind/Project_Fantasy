@@ -365,6 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraCtrl: {fileID: 1627671230}
+  BattlePage: {fileID: 6596254871094730312, guid: e8e04bd20aa186841a88983020c4ae0e, type: 3}
 --- !u!1 &1792493419
 GameObject:
   m_ObjectHideFlags: 0

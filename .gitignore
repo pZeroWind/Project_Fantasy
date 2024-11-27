@@ -5,8 +5,10 @@ Logs/
 Build/
 .vs/
 obj/
+.vscode/
 .vsconfig
 Assembly-CSharp.csproj
 Assembly-CSharp-Editor.csproj
+Assembly-CSharp-firstpass.csproj
 project_fantasy.sln
 

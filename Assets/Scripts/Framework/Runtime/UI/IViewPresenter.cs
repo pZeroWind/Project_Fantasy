@@ -13,7 +13,9 @@ namespace Framework.Runtime.UI
 {
     public interface IViewPresenter
     {
-        void InitPresenter(GameObject view);
+        void OnInitalize(GameObject view);
+
+        void OnRender();
     }
 }
 
